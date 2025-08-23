@@ -32,13 +32,13 @@ fun MainScreen ( viewModel: MainViewModel ){
          .clickable {viewModel.onEvent(ClockUiEvent.TogleSecond)},
          )
     {
-        var isLandscape = if (maxWidth <= maxHeight) true else false
+        val isLandscape = maxWidth <= maxHeight
          Column (modifier = Modifier.fillMaxSize(),
              horizontalAlignment = Alignment.CenterHorizontally,
              verticalArrangement =  if (isLandscape) Arrangement.Top else Arrangement.Center){
 
              if (isLandscape) Spacer(Modifier.height(250.dp))
-             var maxSize = calculateDynamicSizeFont(
+             val maxSize = calculateDynamicSizeFont(
                  text = uiState.value.textScreen,
                  colorText = uiState.value.textColor,
                  maxTextSize = 600.sp,

@@ -2,7 +2,6 @@ package com.example.clockV2.ui.main
 
 import android.util.Log
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.unit.sp
 import androidx.lifecycle.ViewModel
 import com.example.clockV2.ui.main.state.ClockUiEvent
 import com.example.clockV2.ui.main.state.ClockUiState
