@@ -35,8 +35,8 @@ fun MainScreen ( viewModel: MainViewModel ){
          val dinamicFontSize = calculateDinamicSizeFont(
              maxW = maxWidth,
              maxH = maxHeight,
-             text = uiState.value.textScreen,
-             fontFamity = uiState.value.fontFamily
+             //text = uiState.value.textScreen,
+             //fontFamity = uiState.value.fontFamily
          )
 
          Column (modifier = Modifier.fillMaxSize(),
