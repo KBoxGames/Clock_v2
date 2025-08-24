@@ -17,12 +17,21 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.clockV2.ui.main.state.ClockUiEvent
 import com.example.clockV2.ui.main.textUtilits.DynamicText
-
+import com.example.clockV2.ui.settings.SettingsScreen
+import com.example.clockV2.ui.theme.art1
+import com.example.clockV2.ui.theme.art2
+import com.example.clockV2.ui.theme.art3
+import com.example.clockV2.ui.theme.art4
+import com.example.clockV2.ui.theme.led1
+import com.example.clockV2.ui.theme.led2
+import com.example.clockV2.ui.theme.led3
+import com.example.clockV2.ui.theme.led4
 
 
 @SuppressLint("UnusedBoxWithConstraintsScope")
@@ -32,7 +41,7 @@ fun MainScreen ( viewModel: MainViewModel ){
     val uiState = viewModel.uiState.collectAsState()
 
     BoxWithConstraints (modifier = Modifier.fillMaxSize().padding(16.dp)
-         .clickable {viewModel.onEvent(ClockUiEvent.ToggleSecond)},
+         .clickable {  },
          )
     {
         val isPortrait = maxHeight > maxWidth
@@ -46,7 +55,7 @@ fun MainScreen ( viewModel: MainViewModel ){
                  colorText = uiState.value.textColor,
                  maxTextSize = 600.sp,// регулировать размер шрифта
                  maxLine = 1,
-                 style = TextStyle.Default,
+                 style = TextStyle(fontFamily = uiState.value.fontFamily),
                  textDate = uiState.value.dataScreen,
                  isShowDate = uiState.value.isDate
              )

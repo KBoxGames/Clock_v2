@@ -12,7 +12,8 @@ data class ClockUiState(
     val isDate: Boolean = false,
     val textSize: Float = 150f,
     val textColor: Color = Color.Green,
-    val fontFamily: FontFamily = FontFamily.Default
+    val fontFamily: FontFamily = FontFamily.SansSerif,
+    val availableFont: List<Pair<FontFamily, String>> = emptyList()
     )
 
 // 2 ClockUiState.kt

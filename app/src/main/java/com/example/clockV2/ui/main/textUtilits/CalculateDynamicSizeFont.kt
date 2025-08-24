@@ -20,6 +20,7 @@ import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.TextUnit
@@ -33,6 +34,7 @@ fun DynamicText(
     colorText: Color = Color.Black,
     maxLine: Int = 1,
     style: TextStyle = TextStyle.Default,
+    fontFamily: FontFamily = FontFamily.Default,
     textDate: String? = null,
     isShowDate: Boolean
 ) {
@@ -69,7 +71,7 @@ fun DynamicText(
                 text = formattedText,
                 color = colorText,
                 maxLines = maxLine,
-                style = style,
+                style = style.copy(fontFamily = fontFamily),
                 textAlign = TextAlign.Center,
                 softWrap = false,
                 onTextLayout = { textLayoutResult ->
@@ -80,7 +82,7 @@ fun DynamicText(
                 Text(
                     text = textDate,
                     color = colorText,
-                    style = style,
+                    style = style.copy(fontFamily = fontFamily),
                     textAlign = TextAlign.Center,
                     softWrap = false,
                     fontSize = currentSize * 0.15f,

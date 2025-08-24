@@ -7,6 +7,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
 import com.example.clockV2.ui.main.state.ClockUiEvent
 import com.example.clockV2.ui.main.state.ClockUiState
+import com.example.clockV2.ui.theme.availableFonts
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -14,12 +15,13 @@ import kotlinx.coroutines.flow.update
 
 class MainViewModel : ViewModel() {
     private val _uiState = MutableStateFlow(ClockUiState(
-        textScreen = "24:30:00",
+        textScreen = "24:30",
         "12 августа 2025",
         textSize = 200f,
         textColor = Color.Black,
         isDate = true,
         isSecond = false,
+        availableFont = availableFonts
 
     ))
 
@@ -36,6 +38,10 @@ class MainViewModel : ViewModel() {
 
             is ClockUiEvent.FontColorChange -> {
                 _uiState.update { it.copy(textColor = event.newTextColor) }
+            }
+
+            is ClockUiEvent.FontFamilyChange -> {
+                _uiState.update { it.copy(fontFamily = event.newFontFamily) }
             }
 
             ClockUiEvent.ToggleData -> {
