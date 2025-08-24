@@ -12,9 +12,9 @@ import kotlinx.coroutines.flow.update
 
 class MainViewModel : ViewModel() {
     private val _uiState = MutableStateFlow(ClockUiState(
-        textScreen = "12:00:00",
+        textScreen = "24:30:15",
         textSize = 200f,
-        textColor = Color.Green,
+        textColor = Color.Black,
         isDate = false,
         isSecond = true,
 

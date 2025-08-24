@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
@@ -19,7 +18,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.clockV2.ui.main.state.ClockUiEvent
-import com.example.clockV2.ui.main.textUtilits.calculateDynamicSizeFont
+import com.example.clockV2.ui.main.textUtilits.DynamicText
+
 
 
 @SuppressLint("UnusedBoxWithConstraintsScope")
@@ -38,16 +38,14 @@ fun MainScreen ( viewModel: MainViewModel ){
              verticalArrangement =  if (isLandscape) Arrangement.Top else Arrangement.Center){
 
              if (isLandscape) Spacer(Modifier.height(250.dp))
-             val maxSize = calculateDynamicSizeFont(
-                 text = uiState.value.textScreen,
-                 colorText = uiState.value.textColor,
-                 maxTextSize = 600.sp,
-                 maxLine = 1,
-                 style = TextStyle.Default
-             )
-             Spacer(Modifier.height(5.dp))
-             Text("maxSize $maxSize",
-                 fontSize = maxSize * 0.15f)
+             DynamicText(
+                  text = uiState.value.textScreen,
+                  colorText = uiState.value.textColor,
+                  maxTextSize = 600.sp,
+                  maxLine = 1,
+                  style = TextStyle.Default
+              )
+
          }
 
      }

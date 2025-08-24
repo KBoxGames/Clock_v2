@@ -11,26 +11,32 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.sp
 
+
 @Composable
-fun calculateDynamicSizeFont(
+fun DynamicText(
     text: String,
     maxTextSize: TextUnit = 200.sp,
     colorText: Color = Color.Black,
     maxLine: Int = 1,
     style: TextStyle = TextStyle.Default
-): TextUnit {
+) {
     var currentSize by remember { mutableStateOf(maxTextSize) }
-    var readyForDraw by remember { mutableStateOf(false) }
+    val formattedText = remember(text, currentSize) {
+        formatText(text, currentSize, 0.3f)
+    }
 
     Box(modifier = Modifier.fillMaxWidth()) {
         Text(
-            text = text,
-            fontSize = currentSize,
+            text = formattedText,
             color = colorText,
             maxLines = maxLine,
             style = style,
@@ -38,20 +44,37 @@ fun calculateDynamicSizeFont(
             softWrap = false,
             onTextLayout = { textLayoutResult ->
                 if (textLayoutResult.didOverflowWidth) {
-                    // Уменьшаем размер шрифта если текст не помещается
-                    val newSize = currentSize * 0.9
+                    val newSize = currentSize * 0.9f
                     if (newSize > 1.sp) {
                         currentSize = newSize
                     }
-                } else {
-                    readyForDraw = true
                 }
             }
         )
     }
-    return currentSize
 }
 
+private fun formatText(
+    text: String,
+    textSize: TextUnit,
+    percent: Float = 0.4f
+): AnnotatedString {
+    val smallSize = textSize * percent
+    return buildAnnotatedString {
+        if (text.length >= 6) {
+            withStyle(SpanStyle(fontSize = textSize)) {
+                append(text.substring(0, 5))
+            }
+            withStyle(SpanStyle(fontSize = smallSize)) {
+                append(text.substring(5))
+            }
+        } else {
+            withStyle(SpanStyle(fontSize = textSize)) {
+                append(text)
+            }
+        }
+    }
+}
 
 
 
