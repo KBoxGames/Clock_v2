@@ -1,3 +1,5 @@
+
+// 2 ClockUiState.kt
 package com.example.clockV2.ui.main.state
 
 import androidx.compose.ui.graphics.Color
@@ -12,3 +14,5 @@ data class ClockUiState(
     val textColor: Color = Color.Green,
     val fontFamily: FontFamily = FontFamily.Default
     )
+
+// 2 ClockUiState.kt

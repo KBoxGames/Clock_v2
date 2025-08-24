@@ -1,3 +1,5 @@
+
+// 4 MainScreen.kt
 package com.example.clockV2.ui.main
 
 import android.annotation.SuppressLint
@@ -9,6 +11,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
@@ -29,31 +32,33 @@ fun MainScreen ( viewModel: MainViewModel ){
     val uiState = viewModel.uiState.collectAsState()
 
     BoxWithConstraints (modifier = Modifier.fillMaxSize().padding(16.dp)
-         .clickable {viewModel.onEvent(ClockUiEvent.TogleSecond)},
+         .clickable {viewModel.onEvent(ClockUiEvent.ToggleSecond)},
          )
     {
-        val isLandscape = maxWidth <= maxHeight
+        val isPortrait = maxHeight > maxWidth
          Column (modifier = Modifier.fillMaxSize(),
              horizontalAlignment = Alignment.CenterHorizontally,
-             verticalArrangement =  if (isLandscape) Arrangement.Top else Arrangement.Center){
+             verticalArrangement =  if (isPortrait) Arrangement.Top else Arrangement.Center){
 
-             if (isLandscape) Spacer(Modifier.height(250.dp))
+             if (isPortrait) Spacer(Modifier.height(250.dp))
              DynamicText(
-                  text = uiState.value.textScreen,
-                  colorText = uiState.value.textColor,
-                  maxTextSize = 600.sp,
-                  maxLine = 1,
-                  style = TextStyle.Default
-              )
-
+                 textTime = uiState.value.textScreen,
+                 colorText = uiState.value.textColor,
+                 maxTextSize = 600.sp,// регулировать размер шрифта
+                 maxLine = 1,
+                 style = TextStyle.Default,
+                 textDate = uiState.value.dataScreen,
+                 isShowDate = uiState.value.isDate
+             )
          }
 
      }
 }
 
-@Preview(showBackground = true, device = "id:pixel_5")
+@Preview(showBackground = true, heightDp = 2000, widthDp = 2000)
 @Composable
 fun PreviewMainScreen()
 {
     MainScreen(viewModel = MainViewModel())
 }
+// 4 MainScreen.kt

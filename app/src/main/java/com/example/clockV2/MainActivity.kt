@@ -1,3 +1,5 @@
+
+// 6 MainActivity.kt
 package com.example.clockV2
 
 import android.os.Bundle
@@ -24,7 +26,7 @@ import com.example.clockV2.ui.theme.ЧасыTheme
 
 
 /*
-- добавить форматирование секунд, секунды меньше основного текста на 50 - 60 %
+
 - добавить дату, форматирование даты
 - реализовать FontFamily
  */
@@ -44,6 +46,5 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-
-
+// 6 MainActivity.kt
 

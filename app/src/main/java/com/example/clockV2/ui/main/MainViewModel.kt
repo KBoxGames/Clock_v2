@@ -1,3 +1,5 @@
+
+// 5 MainViewModel.kt
 package com.example.clockV2.ui.main
 
 import android.util.Log
@@ -12,11 +14,12 @@ import kotlinx.coroutines.flow.update
 
 class MainViewModel : ViewModel() {
     private val _uiState = MutableStateFlow(ClockUiState(
-        textScreen = "24:30:15",
+        textScreen = "24:30:00",
+        "12 августа 2025",
         textSize = 200f,
         textColor = Color.Black,
-        isDate = false,
-        isSecond = true,
+        isDate = true,
+        isSecond = false,
 
     ))
 
@@ -35,11 +38,11 @@ class MainViewModel : ViewModel() {
                 _uiState.update { it.copy(textColor = event.newTextColor) }
             }
 
-            ClockUiEvent.TogleData -> {
+            ClockUiEvent.ToggleData -> {
                 val newValue = !_uiState.value.isDate
             _uiState.update { it.copy(isDate = newValue) }
             }
-            ClockUiEvent.TogleSecond -> {
+            ClockUiEvent.ToggleSecond -> {
                 val newValue = !_uiState.value.isSecond
                _uiState.update { it.copy(isSecond = newValue) }
             }
@@ -48,3 +51,5 @@ class MainViewModel : ViewModel() {
     }
 
 }
+
+// 5 MainViewModel.kt
