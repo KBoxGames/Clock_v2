@@ -4,6 +4,7 @@ package com.example.clockV2.ui.main
 
 import android.util.Log
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.ViewModel
 import com.example.clockV2.ui.main.state.ClockUiEvent
 import com.example.clockV2.ui.main.state.ClockUiState
@@ -15,12 +16,12 @@ import kotlinx.coroutines.flow.update
 
 class MainViewModel : ViewModel() {
     private val _uiState = MutableStateFlow(ClockUiState(
-        textScreen = "24:30",
+        textScreen = "07:30",
         "12 августа 2025",
-        textSize = 200f,
-        textColor = Color.Black,
+        textSize = 300.sp,
+        textColor = Color.White,
         isDate = true,
-        isSecond = false,
+        isSecond = true,
         availableFont = availableFonts
 
     ))
