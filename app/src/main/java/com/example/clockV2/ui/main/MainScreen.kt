@@ -55,13 +55,14 @@ fun MainScreen ( viewModel: MainViewModel ){
 
     BoxWithConstraints (modifier = Modifier.fillMaxSize().padding(16.dp).background(Color.Black)
          .clickable {  },
+
          )
     {
         val isPortrait = maxHeight > maxWidth
         if (!isPortrait)
         {
             Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End) {
-                ButtonBlockLandscape()
+               // ButtonBlockLandscape()
 
             }
 
@@ -71,7 +72,7 @@ fun MainScreen ( viewModel: MainViewModel ){
              verticalArrangement =  if (isPortrait) Arrangement.Top else Arrangement.Center){
 
              if (isPortrait) {
-                 ButtonBlockPortrait()
+                // ButtonBlockPortrait()
                  Spacer(Modifier.height(150.dp))
              }
              DynamicText(
@@ -94,7 +95,7 @@ fun PreviewMainScreen()
 {
     MainScreen(viewModel = MainViewModel())
 }
-// 4 MainScreen.kt
+
 @Preview
 @Composable
 fun ButtonBlockPortrait()
@@ -158,3 +159,5 @@ Column() {
     }
 }
 }
+
+// 4 MainScreen.kt
