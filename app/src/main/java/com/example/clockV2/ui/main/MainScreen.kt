@@ -14,80 +14,58 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import com.example.clockV2.ui.main.state.ClockUiEvent
+import com.example.clockV2.ui.main.state.ClockUiState
 import com.example.clockV2.ui.main.textUtilits.DynamicText
-import com.example.clockV2.ui.settings.SettingsScreen
-import com.example.clockV2.ui.theme.art1
-import com.example.clockV2.ui.theme.art2
-import com.example.clockV2.ui.theme.art3
-import com.example.clockV2.ui.theme.art4
-import com.example.clockV2.ui.theme.led1
-import com.example.clockV2.ui.theme.led2
-import com.example.clockV2.ui.theme.led3
-import com.example.clockV2.ui.theme.led4
+
 
 
 @SuppressLint("UnusedBoxWithConstraintsScope")
 @Composable
 fun MainScreen ( viewModel: MainViewModel ){
 
-    val uiState = viewModel.uiState.collectAsState()
+    val uiState by viewModel.uiState.collectAsState()
 
     BoxWithConstraints (modifier = Modifier.fillMaxSize().padding(16.dp).background(Color.Black)
-         .clickable {  },
+         .clickable {  }, contentAlignment = Alignment.Center,
 
          )
     {
         val isPortrait = maxHeight > maxWidth
+        var offset = 0f
+
         if (!isPortrait)
         {
+            offset = 0f
             Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End) {
-               // ButtonBlockLandscape()
-
+                ButtonBlockLandscape()
             }
 
         }
-         Column (modifier = Modifier.fillMaxSize(),
-             horizontalAlignment = Alignment.CenterHorizontally,
-             verticalArrangement =  if (isPortrait) Arrangement.Top else Arrangement.Center){
+        else{
+            offset = 300f
+            Column(modifier = Modifier.fillMaxSize()) { ButtonBlockPortrait() }
+            }
 
-             if (isPortrait) {
-                // ButtonBlockPortrait()
-                 Spacer(Modifier.height(150.dp))
-             }
-             DynamicText(
-                 textTime = uiState.value.textScreen,
-                 colorText = uiState.value.textColor,
-                 maxTextSize = uiState.value.textSize,// регулировать размер шрифта
-                 maxLine = 1,
-                 style = TextStyle(fontFamily = uiState.value.fontFamily),
-                 textDate = uiState.value.dataScreen,
-                 isShowDate = uiState.value.isDate
-             )
-         }
-
-     }
+        ClockDisplay(uiState = uiState,offset)
+    }
 }
+
 
 @Preview(showBackground = true, heightDp = 2000, widthDp = 2000)
 @Composable
@@ -96,6 +74,20 @@ fun PreviewMainScreen()
     MainScreen(viewModel = MainViewModel())
 }
 
+@Composable
+fun ClockDisplay(uiState: ClockUiState, offset: Float)
+{
+    DynamicText(
+        textTime = uiState.textScreen,
+        colorText = uiState.textColor,
+        maxTextSize = uiState.textSize,// регулировать размер шрифта
+        maxLine = 1,
+        style = TextStyle(fontFamily = uiState.fontFamily),
+        textDate = uiState.dataScreen,
+        isShowDate = uiState.isDate,
+        offset = offset
+    )
+}
 @Preview
 @Composable
 fun ButtonBlockPortrait()

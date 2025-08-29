@@ -3,7 +3,9 @@ package com.example.clockV2.ui.main.textUtilits
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -22,7 +24,9 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.TextUnit
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 
@@ -36,7 +40,8 @@ fun DynamicText(
     style: TextStyle = TextStyle.Default,
     fontFamily: FontFamily = FontFamily.Default,
     textDate: String? = null,
-    isShowDate: Boolean
+    isShowDate: Boolean,
+    offset : Float = 0f
 ) {
     var currentSize by remember { mutableStateOf(maxTextSize) }
     var timeOverflow by remember { mutableStateOf(false) }
@@ -94,6 +99,8 @@ fun DynamicText(
                     }
                 )
             }
+
+            Spacer(Modifier.height(offset.dp))
         }
     }
 }
