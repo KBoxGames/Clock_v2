@@ -4,11 +4,17 @@ package com.example.clockV2.ui.main
 
 import android.util.Log
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.ViewModel
 import com.example.clockV2.ui.main.state.ClockUiEvent
 import com.example.clockV2.ui.main.state.ClockUiState
+import com.example.clockV2.ui.theme.art1
+import com.example.clockV2.ui.theme.art2
+import com.example.clockV2.ui.theme.art3
+import com.example.clockV2.ui.theme.art4
 import com.example.clockV2.ui.theme.availableFonts
+import com.example.clockV2.ui.theme.led2
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -17,11 +23,12 @@ import kotlinx.coroutines.flow.update
 class MainViewModel : ViewModel() {
     private val _uiState = MutableStateFlow(ClockUiState(
         textScreen = "07:30:54",
-        "12 августа 2025",
-        textSize = 200.sp,
+        dataScreen = "12 августа 2025",
+        textSize = 150.sp,
         textColor = Color.White,
         isDate = true,
         isSecond = true,
+        fontFamily = led2,
         availableFont = availableFonts
 
     ))

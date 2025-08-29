@@ -12,13 +12,13 @@ import androidx.activity.compose.setContent
 import androidx.annotation.RequiresApi
 import androidx.compose.material3.Surface
 import androidx.core.view.WindowCompat
-import com.example.clockV2.ui.main.PreviewMainScreen
+import com.example.clockV2.navigation.AppNavigation
 import com.example.clockV2.ui.theme.ЧасыTheme
 
 
 /*
 
-- добавить дату, форматирование даты
+
 - реализовать FontFamily
  */
 
@@ -31,8 +31,7 @@ class MainActivity : ComponentActivity() {
             enableFullScreenMode()
             ЧасыTheme {
                 Surface {
-
-                    PreviewMainScreen()
+                    AppNavigation()
                 }
             }
         }
