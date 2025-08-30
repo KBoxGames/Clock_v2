@@ -31,8 +31,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.example.clockV2.navigation.Screen
 import com.example.clockV2.ui.main.state.ClockUiState
 import com.example.clockV2.ui.main.textUtilits.DynamicText
+import com.example.clockV2.ui.settings.SettingsScreen
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -42,43 +44,55 @@ import kotlinx.coroutines.launch
 
 @SuppressLint("UnusedBoxWithConstraintsScope")
 @Composable
-fun MainScreen (viewModel: MainViewModel ){
+fun MainScreen (viewModel: MainViewModel){
 
     val uiState by viewModel.uiState.collectAsState()
-    val navController: NavController? = null
     var isShowButon by remember { mutableStateOf(false) }
     var timerJob by remember { mutableStateOf<Job?>(null) }
+    var isShowSettings by remember { mutableStateOf(false) }
 
-    BoxWithConstraints (modifier = Modifier.fillMaxSize().padding(16.dp).background(Color.Black)
-         .clickable { isShowButon = true
-                    timerJob?.cancel()
-                    timerJob = CoroutineScope(Dispatchers.Main).launch {
-                        delay(6000)
-                        isShowButon = false
-                    }
-                    }, contentAlignment = Alignment.Center,
+    BoxWithConstraints (modifier = Modifier
+        .fillMaxSize()
+        .padding(16.dp)
+        .background(Color.Black)
+        .clickable {
+            isShowButon = true
+            timerJob?.cancel()
+            timerJob = CoroutineScope(Dispatchers.Main).launch {
+                delay(6000)
+                isShowButon = false
+            }
+        }, contentAlignment = Alignment.Center,
 
          )
     {
         val isPortrait = maxHeight > maxWidth
         var offset = 0f
+        val showSettings = {isShowSettings = true}
 
         if (!isPortrait)
         {
             offset = 0f
             Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End) {
-               if (isShowButon) ButtonBlockLandscape()
+               if (isShowButon) ButtonBlockLandscape(showSettings)
             }
 
         }
         else{
             offset = 300f
             Column(modifier = Modifier.fillMaxSize()) {
-                if (isShowButon) ButtonBlockPortrait(navController)
+                if (isShowButon) ButtonBlockPortrait(showSettings)
             }
             }
 
         ClockDisplay(uiState = uiState,offset)
+
+        if (isShowSettings)
+        {
+            SettingsScreen(
+                onBack = {isShowSettings = false}
+            )
+        }
     }
 }
 
@@ -100,7 +114,7 @@ fun ClockDisplay(uiState: ClockUiState, offset: Float)
 }
 
 @Composable
-fun ButtonBlockPortrait(navController: NavController?)
+fun ButtonBlockPortrait(showSettings: () -> Unit)
 {
     Row(modifier = Modifier.fillMaxWidth()) {
         IconButton(onClick = {},
@@ -118,9 +132,9 @@ fun ButtonBlockPortrait(navController: NavController?)
 
         Spacer(modifier = Modifier.weight(1f))
 
-
-        IconButton(onClick = {navController?.navigate("settings")},
-            ) {
+       IconButton(
+            onClick =  showSettings ,
+        ) {
             Icon(
                 imageVector = Icons.Default.Settings,
                 contentDescription = "Настройки",
@@ -131,7 +145,7 @@ fun ButtonBlockPortrait(navController: NavController?)
     }
 }
 @Composable
-fun ButtonBlockLandscape()
+fun ButtonBlockLandscape(showSettings: () -> Unit)
 {
 Column() {
     IconButton(onClick = {},
@@ -150,7 +164,7 @@ Column() {
     Spacer(modifier = Modifier.weight(1f))
 
 
-    IconButton(onClick = {},
+    IconButton(onClick = showSettings
     ) {
         Icon(
             imageVector = Icons.Default.Settings,
