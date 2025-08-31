@@ -31,11 +31,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.clockV2.ui.theme.BorderColor
 
-
-
 @SuppressLint("UnusedBoxWithConstraintsScope")
 @Composable
-fun SettingsScreen(closeSettings: ()->Unit) {
+fun SettingsScreen(closeSettings: ()->Unit, showFontSettings: () -> Unit) {
 
     val isSecond = remember { mutableStateOf(false) }
     val isDate = remember { mutableStateOf(false) }
@@ -73,7 +71,7 @@ fun SettingsScreen(closeSettings: ()->Unit) {
                     disabledContentColor = Color.Transparent,
                     containerColor = Color.DarkGray
                 ),
-                onClick = {}) {
+                onClick = showFontSettings) {
                     Box(modifier = Modifier.fillMaxWidth(),
                         contentAlignment = Alignment.CenterEnd) {
                         Text("Настройка шрифта", fontSize = 20.sp)

@@ -34,6 +34,7 @@ import androidx.navigation.NavController
 import com.example.clockV2.navigation.Screen
 import com.example.clockV2.ui.main.state.ClockUiState
 import com.example.clockV2.ui.main.textUtilits.DynamicText
+import com.example.clockV2.ui.settings.SettingsFonts
 import com.example.clockV2.ui.settings.SettingsScreen
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -50,6 +51,7 @@ fun MainScreen (viewModel: MainViewModel){
     var isShowButon by remember { mutableStateOf(false) }
     var timerJob by remember { mutableStateOf<Job?>(null) }
     var isShowSettings by remember { mutableStateOf(false) }
+    var isShowFontSettings by remember { mutableStateOf(false) }
 
     BoxWithConstraints (modifier = Modifier
         .fillMaxSize()
@@ -71,6 +73,11 @@ fun MainScreen (viewModel: MainViewModel){
         var offset = 0f
         val showSettings = {isShowSettings = true}
         val closeSettings = {isShowSettings = false}
+        val showFontSettings = {
+            isShowFontSettings = true
+            isShowSettings = false
+        }
+        val closeFontSettings = {isShowFontSettings = false}
 
         if (!isPortrait)
         {
@@ -91,7 +98,12 @@ fun MainScreen (viewModel: MainViewModel){
 
         if (isShowSettings)
         {
-            SettingsScreen(closeSettings)
+            SettingsScreen(closeSettings, showFontSettings)
+        }
+
+        if (isShowFontSettings)
+        {
+            SettingsFonts()
         }
     }
 }
