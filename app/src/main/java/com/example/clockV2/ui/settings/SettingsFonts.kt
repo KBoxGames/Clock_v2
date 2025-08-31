@@ -25,7 +25,10 @@ import androidx.compose.ui.unit.sp
 import com.example.clockV2.ui.theme.BorderColor
 
 @Composable
-fun SettingsFonts(closeFontSettings: () -> Unit)
+fun SettingsFonts(
+    closeFontSettings: () -> Unit,
+    showFontSize: () -> Unit
+)
 {
     BoxWithConstraints (modifier = Modifier.fillMaxSize().clickable(onClick = closeFontSettings),
         contentAlignment = Alignment.BottomStart)
@@ -59,7 +62,7 @@ fun SettingsFonts(closeFontSettings: () -> Unit)
                     disabledContentColor = Color.Transparent,
                     containerColor = Color.DarkGray
                 ),
-                onClick = {}) {
+                onClick = showFontSize) {
                 Box(modifier = Modifier.fillMaxWidth(),
                     contentAlignment = Alignment.CenterStart) {
                     Text("Размер шрифта", fontSize = 20.sp)

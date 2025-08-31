@@ -34,6 +34,7 @@ import com.example.clockV2.ui.main.state.ClockUiState
 import com.example.clockV2.ui.main.textUtilits.DynamicText
 import com.example.clockV2.ui.settings.SettingsFonts
 import com.example.clockV2.ui.settings.SettingsScreen
+import com.example.clockV2.ui.settings.SettingsSizeFont
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -50,10 +51,10 @@ fun MainScreen (viewModel: MainViewModel){
     var timerJob by remember { mutableStateOf<Job?>(null) }
     var isShowSettings by remember { mutableStateOf(false) }
     var isShowFontSettings by remember { mutableStateOf(false) }
+    var isShowFontSize by remember { mutableStateOf(false) }
 
     BoxWithConstraints (modifier = Modifier
         .fillMaxSize()
-        .padding(16.dp)
         .background(Color.Black)
         .clickable {
             isShowButon = true
@@ -76,6 +77,8 @@ fun MainScreen (viewModel: MainViewModel){
             isShowSettings = false
         }
         val closeFontSettings = {isShowFontSettings = false}
+        val showFontSize = {isShowFontSize = true}
+        val closeFontSize = {isShowFontSize =false}
 
         if (!isPortrait)
         {
@@ -87,7 +90,7 @@ fun MainScreen (viewModel: MainViewModel){
         }
         else{
             offset = 300f
-            Column(modifier = Modifier.fillMaxSize()) {
+            Column(modifier = Modifier.fillMaxSize(), verticalArrangement = Arrangement.Bottom) {
                 if (isShowButon) ButtonBlockPortrait(showSettings)
             }
             }
@@ -101,7 +104,16 @@ fun MainScreen (viewModel: MainViewModel){
 
         if (isShowFontSettings)
         {
-            SettingsFonts(closeFontSettings)
+            SettingsFonts(
+                closeFontSettings,
+                showFontSize = showFontSize
+            )
+        }
+
+        if (isShowFontSize)
+        {
+           isShowFontSettings = false
+            SettingsSizeFont(closeFontSize)
         }
     }
 }
@@ -126,7 +138,7 @@ fun ClockDisplay(uiState: ClockUiState, offset: Float)
 @Composable
 fun ButtonBlockPortrait(showSettings: () -> Unit)
 {
-    Row(modifier = Modifier.fillMaxWidth()) {
+    Row(modifier = Modifier.fillMaxWidth().padding(30.dp)) {
         IconButton(onClick = {},
 
         ) {
@@ -157,7 +169,7 @@ fun ButtonBlockPortrait(showSettings: () -> Unit)
 @Composable
 fun ButtonBlockLandscape(showSettings: () -> Unit)
 {
-Column() {
+Column(modifier = Modifier.padding(30.dp)) {
     IconButton(onClick = {},
 
         ) {
