@@ -61,6 +61,7 @@ fun MainScreen (viewModel: MainViewModel){
             timerJob = CoroutineScope(Dispatchers.Main).launch {
                 delay(6000)
                 isShowButon = false
+
             }
         }, contentAlignment = Alignment.Center,
 
@@ -69,6 +70,7 @@ fun MainScreen (viewModel: MainViewModel){
         val isPortrait = maxHeight > maxWidth
         var offset = 0f
         val showSettings = {isShowSettings = true}
+        val closeSettings = {isShowSettings = false}
 
         if (!isPortrait)
         {
@@ -89,9 +91,7 @@ fun MainScreen (viewModel: MainViewModel){
 
         if (isShowSettings)
         {
-            SettingsScreen(
-                onBack = {isShowSettings = false}
-            )
+            SettingsScreen(closeSettings)
         }
     }
 }
