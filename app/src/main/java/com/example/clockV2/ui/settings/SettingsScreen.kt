@@ -37,8 +37,8 @@ import com.example.clockV2.ui.theme.BorderColor
 @Composable
 fun SettingsScreen(closeSettings: ()->Unit) {
 
-    var isSecond = remember { mutableStateOf(false) }
-    var isDate = remember { mutableStateOf(false) }
+    val isSecond = remember { mutableStateOf(false) }
+    val isDate = remember { mutableStateOf(false) }
 
     BoxWithConstraints (modifier = Modifier
         .fillMaxSize().clickable(onClick = closeSettings),
