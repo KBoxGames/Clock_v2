@@ -46,8 +46,8 @@ fun SettingsScreen(closeSettings: ()->Unit) {
         Alignment.BottomStart
         ) {
             val isPortrait = maxHeight > maxWidth
-            var fractionH = 1f
-            var fractionW = 0.5f
+            var fractionH: Float
+            var fractionW: Float
         if (isPortrait)
             {
                 fractionW = 1f
