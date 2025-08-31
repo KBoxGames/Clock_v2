@@ -1,6 +1,7 @@
 package com.example.clockV2.ui.settings
 
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Spacer
@@ -24,9 +25,9 @@ import androidx.compose.ui.unit.sp
 import com.example.clockV2.ui.theme.BorderColor
 
 @Composable
-fun SettingsFonts()
+fun SettingsFonts(closeFontSettings: () -> Unit)
 {
-    BoxWithConstraints (modifier = Modifier.fillMaxSize(),
+    BoxWithConstraints (modifier = Modifier.fillMaxSize().clickable(onClick = closeFontSettings),
         contentAlignment = Alignment.BottomStart)
     {
         val isPortrait = maxHeight > maxWidth

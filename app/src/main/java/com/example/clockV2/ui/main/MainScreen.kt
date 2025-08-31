@@ -30,8 +30,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
-import com.example.clockV2.navigation.Screen
 import com.example.clockV2.ui.main.state.ClockUiState
 import com.example.clockV2.ui.main.textUtilits.DynamicText
 import com.example.clockV2.ui.settings.SettingsFonts
@@ -70,7 +68,7 @@ fun MainScreen (viewModel: MainViewModel){
          )
     {
         val isPortrait = maxHeight > maxWidth
-        var offset = 0f
+        var offset: Float
         val showSettings = {isShowSettings = true}
         val closeSettings = {isShowSettings = false}
         val showFontSettings = {
@@ -103,7 +101,7 @@ fun MainScreen (viewModel: MainViewModel){
 
         if (isShowFontSettings)
         {
-            SettingsFonts()
+            SettingsFonts(closeFontSettings)
         }
     }
 }
