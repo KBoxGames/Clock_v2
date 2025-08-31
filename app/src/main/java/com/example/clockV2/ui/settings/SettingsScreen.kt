@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.AlertDialog
@@ -62,7 +63,7 @@ fun SettingsScreen(closeSettings: ()->Unit) {
             } else
             {
                 fractionW = 0.5f
-                fractionH = 0.85f
+                fractionH = 0.8f
             }
             Card(modifier = Modifier
                 .fillMaxWidth(fractionW).fillMaxHeight(fractionH)
@@ -72,8 +73,7 @@ fun SettingsScreen(closeSettings: ()->Unit) {
                 Button(
                 modifier = Modifier
                     .weight(1f)
-                    .fillMaxWidth()
-                    .padding(bottom = 8.dp),
+                    .fillMaxWidth(),
                 border = BorderStroke(2.dp, color = BorderColor),
                 colors = ButtonColors(
                     contentColor = Color.White,
@@ -87,11 +87,11 @@ fun SettingsScreen(closeSettings: ()->Unit) {
                         Text("Настройка шрифта", fontSize = 20.sp)
                     }
             }
+                Spacer(Modifier.height(8.dp))
                 Button(
                     modifier = Modifier
                         .weight(1f)
-                        .fillMaxWidth()
-                        .padding(bottom = 8.dp),
+                        .fillMaxWidth(),
                     border = BorderStroke(2.dp, color = BorderColor),
                     colors = ButtonColors(
                         contentColor = Color.White,
@@ -123,6 +123,7 @@ fun SettingsScreen(closeSettings: ()->Unit) {
                     }
 
                 }
+                Spacer(Modifier.height(8.dp))
                 Button(
                     modifier = Modifier
                         .weight(1f)
