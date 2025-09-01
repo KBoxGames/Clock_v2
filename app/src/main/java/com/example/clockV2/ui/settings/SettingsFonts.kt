@@ -28,7 +28,8 @@ import com.example.clockV2.ui.theme.BorderColor
 @Composable
 fun SettingsFonts(
     onClose : ()->Unit,
-    onFontSizeClick : ()->Unit
+    onFontSizeClick : ()->Unit,
+    onFontColorClick: ()->Unit
 )
 {
     BoxWithConstraints (modifier = Modifier.fillMaxSize().clickable(onClick = onClose),
@@ -81,7 +82,7 @@ fun SettingsFonts(
                     disabledContentColor = Color.Transparent,
                     containerColor = Color.DarkGray
                 ),
-                onClick = {}) {
+                onClick = onFontColorClick) {
 
                     Box(modifier = Modifier.fillMaxWidth(),
                         contentAlignment = Alignment.CenterStart

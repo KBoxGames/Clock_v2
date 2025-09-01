@@ -38,6 +38,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import com.example.clockV2.ui.main.state.ClockUiState
 import com.example.clockV2.ui.main.textUtilits.DynamicText
+import com.example.clockV2.ui.settings.SettingsColorFont
 import com.example.clockV2.ui.settings.SettingsFonts
 import com.example.clockV2.ui.settings.SettingsScreen
 import com.example.clockV2.ui.settings.SettingsSizeFont
@@ -49,7 +50,7 @@ import kotlinx.coroutines.launch
 
 // Перечисление для управления состоянием экранов
 enum class SettingsScreenState {
-    HIDDEN, MAIN, FONTS, FONT_SIZE
+    HIDDEN, MAIN, FONTS, FONT_SIZE, FONT_COLOR
 }
 
 @SuppressLint("UnusedBoxWithConstraintsScope")
@@ -107,6 +108,8 @@ fun MainScreen(viewModel: MainViewModel) {
 
         ClockDisplay(uiState = uiState, offset)
 
+        //SettingsColorFont({settingsScreenState = SettingsScreenState.MAIN})
+
         // Анимированное отображение экранов настроек
         AnimatedVisibility(
             visible = settingsScreenState != SettingsScreenState.HIDDEN,
@@ -138,7 +141,8 @@ fun MainScreen(viewModel: MainViewModel) {
                     SettingsScreenState.FONTS -> {
                         SettingsFonts(
                             onClose = { settingsScreenState = SettingsScreenState.MAIN },
-                            onFontSizeClick = { settingsScreenState = SettingsScreenState.FONT_SIZE }
+                            onFontSizeClick = { settingsScreenState = SettingsScreenState.FONT_SIZE },
+                            onFontColorClick =  {settingsScreenState = SettingsScreenState.FONT_COLOR}
                         )
                     }
                     SettingsScreenState.FONT_SIZE -> {
@@ -146,6 +150,11 @@ fun MainScreen(viewModel: MainViewModel) {
                             onClose = { settingsScreenState = SettingsScreenState.MAIN }
                         )
                     }
+                    SettingsScreenState.FONT_COLOR -> {
+                        SettingsColorFont(
+                            onClose = {settingsScreenState = SettingsScreenState.MAIN})
+                    }
+
                     SettingsScreenState.HIDDEN -> {
                         // Пустой Box, когда экран скрыт
                         Box(modifier = Modifier.fillMaxSize())

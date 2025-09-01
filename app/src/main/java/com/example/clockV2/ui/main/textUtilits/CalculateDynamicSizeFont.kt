@@ -24,13 +24,9 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.clockV2.ui.theme.art1
-import com.example.clockV2.ui.theme.art2
-import com.example.clockV2.ui.theme.art3
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -42,7 +38,6 @@ fun DynamicText(
     maxLine: Int = 1,
     style: TextStyle = TextStyle.Default,
     fontFamily: FontFamily = FontFamily.Default,
-    //fontFamily: FontFamily = art3,
     textDate: String? = null,
     isShowDate: Boolean,
     offset : Float = 0f
