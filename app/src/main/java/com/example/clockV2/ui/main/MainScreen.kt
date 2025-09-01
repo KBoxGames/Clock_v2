@@ -1,11 +1,17 @@
-
 // 4 MainScreen.kt
 package com.example.clockV2.ui.main
 
 import android.annotation.SuppressLint
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -41,91 +47,121 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
+// Перечисление для управления состоянием экранов
+enum class SettingsScreenState {
+    HIDDEN, MAIN, FONTS, FONT_SIZE
+}
 
 @SuppressLint("UnusedBoxWithConstraintsScope")
 @Composable
-fun MainScreen (viewModel: MainViewModel){
-
+fun MainScreen(viewModel: MainViewModel) {
     val uiState by viewModel.uiState.collectAsState()
-    var isShowButon by remember { mutableStateOf(false) }
+    var isShowButton by remember { mutableStateOf(false) }
     var timerJob by remember { mutableStateOf<Job?>(null) }
-    var isShowSettings by remember { mutableStateOf(false) }
-    var isShowFontSettings by remember { mutableStateOf(false) }
-    var isShowFontSize by remember { mutableStateOf(false) }
+    var settingsScreenState by remember { mutableStateOf(SettingsScreenState.HIDDEN) }
 
-    BoxWithConstraints (modifier = Modifier
-        .fillMaxSize()
-        .background(Color.Black)
-        .clickable {
-            isShowButon = true
-            timerJob?.cancel()
-            timerJob = CoroutineScope(Dispatchers.Main).launch {
-                delay(6000)
-                isShowButon = false
-
-            }
-        }, contentAlignment = Alignment.Center,
-
-         )
-    {
+    BoxWithConstraints(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Color.Black)
+            .clickable {
+                if (settingsScreenState != SettingsScreenState.HIDDEN) {
+                    settingsScreenState = SettingsScreenState.HIDDEN
+                } else {
+                    isShowButton = true
+                    timerJob?.cancel()
+                    timerJob = CoroutineScope(Dispatchers.Main).launch {
+                        delay(6000)
+                        isShowButton = false
+                    }
+                }
+            },
+        contentAlignment = Alignment.Center
+    ) {
         val isPortrait = maxHeight > maxWidth
-        var offset: Float
-        val showSettings = {isShowSettings = true}
-        val closeSettings = {isShowSettings = false}
-        val showFontSettings = {
-            isShowFontSettings = true
-            isShowSettings = false
-        }
-        val closeFontSettings = {isShowFontSettings = false}
-        val showFontSize = {isShowFontSize = true}
-        val closeFontSize = {isShowFontSize =false}
+        val offset = if (isPortrait) 300f else 0f
 
-        if (!isPortrait)
-        {
-            offset = 0f
-            Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End) {
-               if (isShowButon) ButtonBlockLandscape(showSettings)
+        if (!isPortrait) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.End
+            ) {
+                if (isShowButton) {
+                    ButtonBlockLandscape {
+                        settingsScreenState = SettingsScreenState.MAIN
+                    }
+                }
             }
-
-        }
-        else{
-            offset = 300f
-            Column(modifier = Modifier.fillMaxSize(), verticalArrangement = Arrangement.Bottom) {
-                if (isShowButon) ButtonBlockPortrait(showSettings)
+        } else {
+            Column(
+                modifier = Modifier.fillMaxSize(),
+                verticalArrangement = Arrangement.Bottom
+            ) {
+                if (isShowButton) {
+                    ButtonBlockPortrait {
+                        settingsScreenState = SettingsScreenState.MAIN
+                    }
+                }
             }
+        }
+
+        ClockDisplay(uiState = uiState, offset)
+
+        // Анимированное отображение экранов настроек
+        AnimatedVisibility(
+            visible = settingsScreenState != SettingsScreenState.HIDDEN,
+            enter = fadeIn(animationSpec = tween(300)) +
+                    slideInVertically(
+                        initialOffsetY = { it },
+                        animationSpec = tween(durationMillis = 500)
+                    ),
+            exit = fadeOut(animationSpec = tween(300)) +
+                    slideOutVertically(
+                        targetOffsetY = { it },
+                        animationSpec = tween(durationMillis = 500)
+                    ),
+            modifier = Modifier.fillMaxSize()
+        ) {
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(Color.Black.copy(alpha = 0.7f))
+            ) {
+                when (settingsScreenState) {
+                    SettingsScreenState.MAIN -> {
+                        SettingsScreen(
+                            onClose = { settingsScreenState = SettingsScreenState.HIDDEN },
+                            onFontsClick = { settingsScreenState = SettingsScreenState.FONTS },
+                            onFontSizeClick = { settingsScreenState = SettingsScreenState.FONT_SIZE }
+                        )
+                    }
+                    SettingsScreenState.FONTS -> {
+                        SettingsFonts(
+                            onClose = { settingsScreenState = SettingsScreenState.MAIN },
+                            onFontSizeClick = { settingsScreenState = SettingsScreenState.FONT_SIZE }
+                        )
+                    }
+                    SettingsScreenState.FONT_SIZE -> {
+                        SettingsSizeFont(
+                            onClose = { settingsScreenState = SettingsScreenState.MAIN }
+                        )
+                    }
+                    SettingsScreenState.HIDDEN -> {
+                        // Пустой Box, когда экран скрыт
+                        Box(modifier = Modifier.fillMaxSize())
+                    }
+                }
             }
-
-        ClockDisplay(uiState = uiState,offset)
-
-        if (isShowSettings)
-        {
-            SettingsScreen(closeSettings, showFontSettings)
-        }
-
-        if (isShowFontSettings)
-        {
-            SettingsFonts(
-                closeFontSettings,
-                showFontSize = showFontSize
-            )
-        }
-
-        if (isShowFontSize)
-        {
-           isShowFontSettings = false
-            SettingsSizeFont(closeFontSize)
         }
     }
 }
 
-
 @Composable
-fun ClockDisplay(uiState: ClockUiState, offset: Float)
-{
+fun ClockDisplay(uiState: ClockUiState, offset: Float) {
     DynamicText(
         textTime = uiState.textScreen,
         colorText = uiState.textColor,
-        maxTextSize = uiState.textSize,// регулировать размер шрифта
+        maxTextSize = uiState.textSize,
         maxLine = 1,
         style = TextStyle(fontFamily = uiState.fontFamily),
         textDate = uiState.dataScreen,
@@ -136,27 +172,20 @@ fun ClockDisplay(uiState: ClockUiState, offset: Float)
 }
 
 @Composable
-fun ButtonBlockPortrait(showSettings: () -> Unit)
-{
+fun ButtonBlockPortrait(showSettings: () -> Unit) {
     Row(modifier = Modifier.fillMaxWidth().padding(30.dp)) {
-        IconButton(onClick = {},
-
-        ) {
+        IconButton(onClick = {}) {
             Icon(
                 imageVector = Icons.Default.Info,
-                contentDescription = "Помощь" ,
+                contentDescription = "Помощь",
                 modifier = Modifier.size(33.dp),
                 tint = Color.White
-
             )
-
         }
 
         Spacer(modifier = Modifier.weight(1f))
 
-       IconButton(
-            onClick =  showSettings ,
-        ) {
+        IconButton(onClick = showSettings) {
             Icon(
                 imageVector = Icons.Default.Settings,
                 contentDescription = "Настройки",
@@ -166,36 +195,28 @@ fun ButtonBlockPortrait(showSettings: () -> Unit)
         }
     }
 }
+
 @Composable
-fun ButtonBlockLandscape(showSettings: () -> Unit)
-{
-Column(modifier = Modifier.padding(30.dp)) {
-    IconButton(onClick = {},
+fun ButtonBlockLandscape(showSettings: () -> Unit) {
+    Column(modifier = Modifier.padding(30.dp)) {
+        IconButton(onClick = {}) {
+            Icon(
+                imageVector = Icons.Default.Info,
+                contentDescription = "Помощь",
+                modifier = Modifier.size(33.dp),
+                tint = Color.White
+            )
+        }
 
-        ) {
-        Icon(
-            imageVector = Icons.Default.Info,
-            contentDescription = "Помощь" ,
-            modifier = Modifier.size(33.dp),
-            tint = Color.White
+        Spacer(modifier = Modifier.weight(1f))
 
-        )
-
-    }
-
-    Spacer(modifier = Modifier.weight(1f))
-
-
-    IconButton(onClick = showSettings
-    ) {
-        Icon(
-            imageVector = Icons.Default.Settings,
-            contentDescription = "Настройки",
-            modifier = Modifier.size(33.dp),
-            tint = Color.White
-        )
+        IconButton(onClick = showSettings) {
+            Icon(
+                imageVector = Icons.Default.Settings,
+                contentDescription = "Настройки",
+                modifier = Modifier.size(33.dp),
+                tint = Color.White
+            )
+        }
     }
 }
-}
-
-// 4 MainScreen.kt

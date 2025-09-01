@@ -29,17 +29,22 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.clockV2.ui.main.SettingsScreenState
 import com.example.clockV2.ui.theme.BorderColor
 
 @SuppressLint("UnusedBoxWithConstraintsScope")
 @Composable
-fun SettingsScreen(closeSettings: ()->Unit, showFontSettings: () -> Unit) {
+fun SettingsScreen(
+    onClose : () -> Unit,
+    onFontsClick : () -> Unit,
+    onFontSizeClick : () -> Unit
+) {
 
     val isSecond = remember { mutableStateOf(false) }
     val isDate = remember { mutableStateOf(false) }
 
     BoxWithConstraints (modifier = Modifier
-        .fillMaxSize().clickable(onClick = closeSettings),
+        .fillMaxSize().clickable(onClick = onClose),
         //.padding(30.dp),
         Alignment.BottomStart
         ) {
@@ -71,7 +76,7 @@ fun SettingsScreen(closeSettings: ()->Unit, showFontSettings: () -> Unit) {
                     disabledContentColor = Color.Transparent,
                     containerColor = Color.DarkGray
                 ),
-                onClick = showFontSettings) {
+                onClick = onFontsClick) {
                     Box(modifier = Modifier.fillMaxWidth(),
                         contentAlignment = Alignment.CenterEnd) {
                         Text("Настройка шрифта", fontSize = 20.sp)
@@ -125,7 +130,9 @@ fun SettingsScreen(closeSettings: ()->Unit, showFontSettings: () -> Unit) {
                         disabledContentColor = Color.Transparent,
                         containerColor = Color.DarkGray
                     ),
-                    onClick = {isDate.value = !isDate.value}) {
+                    onClick = {
+                        onFontSizeClick
+                        isDate.value = !isDate.value}) {
 
                     Row(modifier = Modifier.fillMaxWidth(),
                         Arrangement.Center,

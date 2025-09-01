@@ -22,15 +22,16 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.clockV2.ui.main.SettingsScreenState
 import com.example.clockV2.ui.theme.BorderColor
 
 @Composable
 fun SettingsFonts(
-    closeFontSettings: () -> Unit,
-    showFontSize: () -> Unit
+    onClose : ()->Unit,
+    onFontSizeClick : ()->Unit
 )
 {
-    BoxWithConstraints (modifier = Modifier.fillMaxSize().clickable(onClick = closeFontSettings),
+    BoxWithConstraints (modifier = Modifier.fillMaxSize().clickable(onClick = onClose),
         contentAlignment = Alignment.BottomStart)
     {
         val isPortrait = maxHeight > maxWidth
@@ -62,7 +63,7 @@ fun SettingsFonts(
                     disabledContentColor = Color.Transparent,
                     containerColor = Color.DarkGray
                 ),
-                onClick = showFontSize) {
+                onClick = onFontSizeClick) {
                 Box(modifier = Modifier.fillMaxWidth(),
                     contentAlignment = Alignment.CenterStart) {
                     Text("Размер шрифта", fontSize = 20.sp)

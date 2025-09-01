@@ -20,10 +20,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun SettingsSizeFont(closeFontSize: () -> Unit) {
+fun SettingsSizeFont(onClose: () -> Unit) {
 
     var fontSize by remember { mutableFloatStateOf(100f) }
-    Box(modifier = Modifier.fillMaxSize().clickable(onClick = closeFontSize),
+    Box(modifier = Modifier.fillMaxSize().clickable(onClick = onClose),
         contentAlignment = Alignment.TopEnd) {
         Card( colors = CardDefaults.cardColors(Color.Black),
             modifier = Modifier.fillMaxWidth(0.5f)
