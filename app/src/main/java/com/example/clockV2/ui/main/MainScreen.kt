@@ -51,7 +51,7 @@ import kotlinx.coroutines.launch
 
 // Перечисление для управления состоянием экранов
 enum class SettingsScreenState {
-    HIDDEN, MAIN, FONTS, FONT_SIZE, FONT_COLOR
+    HIDDEN, MAIN, FONTS, FONT_SIZE, FONT_COLOR, FONT_TYPE
 }
 
 @SuppressLint("UnusedBoxWithConstraintsScope")
@@ -141,16 +141,21 @@ fun MainScreen(viewModel: MainViewModel) {
                         SettingsFonts(
                             onClose = { settingsScreenState = SettingsScreenState.MAIN },
                             onFontSizeClick = { settingsScreenState = SettingsScreenState.FONT_SIZE },
-                            onFontColorClick =  {settingsScreenState = SettingsScreenState.FONT_COLOR}
+                            onFontColorClick =  {settingsScreenState = SettingsScreenState.FONT_COLOR},
+                            onFontTypeClick = {settingsScreenState = SettingsScreenState.FONT_TYPE}
                         )
                     }
                     SettingsScreenState.FONT_SIZE -> {
                         SettingsSizeFont(
-                            onClose = { settingsScreenState = SettingsScreenState.MAIN }
-                        )
+                            onClose = { settingsScreenState = SettingsScreenState.MAIN })
                     }
                     SettingsScreenState.FONT_COLOR -> {
                         SettingsColorFont(
+                            onClose = {settingsScreenState = SettingsScreenState.MAIN})
+                    }
+
+                    SettingsScreenState.FONT_TYPE -> {
+                        SettingsTypeFon (
                             onClose = {settingsScreenState = SettingsScreenState.MAIN})
                     }
 
@@ -158,6 +163,8 @@ fun MainScreen(viewModel: MainViewModel) {
                         // Пустой Box, когда экран скрыт
                         Box(modifier = Modifier.fillMaxSize())
                     }
+
+
                 }
             }
         }

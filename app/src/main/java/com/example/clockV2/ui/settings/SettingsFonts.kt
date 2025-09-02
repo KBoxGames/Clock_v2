@@ -29,7 +29,8 @@ import com.example.clockV2.ui.theme.BorderColor
 fun SettingsFonts(
     onClose : ()->Unit,
     onFontSizeClick : ()->Unit,
-    onFontColorClick: ()->Unit
+    onFontColorClick: ()->Unit,
+    onFontTypeClick: ()-> Unit
 )
 {
     BoxWithConstraints (modifier = Modifier.fillMaxSize().clickable(onClick = onClose),
@@ -47,7 +48,6 @@ fun SettingsFonts(
             fractionW = 0.5f
             fractionH = 0.8f
         }
-
         Card(modifier = Modifier
             .fillMaxWidth(fractionW).fillMaxHeight(fractionH)
             .clip(RoundedCornerShape(40.dp)),
@@ -92,7 +92,6 @@ fun SettingsFonts(
 
                             }
 
-
             Spacer(Modifier.height(8.dp))
             Button(
                 modifier = Modifier
@@ -105,14 +104,14 @@ fun SettingsFonts(
                     disabledContentColor = Color.Transparent,
                     containerColor = Color.DarkGray
                 ),
-                onClick = {}) {
+                onClick = onFontTypeClick) {
 
                     Box(modifier = Modifier.fillMaxWidth(),
                         contentAlignment = Alignment.CenterStart) {
                         Text(" Шрифт", fontSize = 20.sp)
                     }
-
-            } }
+            }
+        }
 
     }
 }
