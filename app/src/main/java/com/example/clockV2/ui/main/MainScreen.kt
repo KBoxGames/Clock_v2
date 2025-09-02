@@ -42,6 +42,7 @@ import com.example.clockV2.ui.settings.SettingsColorFont
 import com.example.clockV2.ui.settings.SettingsFonts
 import com.example.clockV2.ui.settings.SettingsScreen
 import com.example.clockV2.ui.settings.SettingsSizeFont
+import com.example.clockV2.ui.settings.SettingsTypeFon
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -107,8 +108,6 @@ fun MainScreen(viewModel: MainViewModel) {
         }
 
         ClockDisplay(uiState = uiState, offset)
-
-        //SettingsColorFont({settingsScreenState = SettingsScreenState.MAIN})
 
         // Анимированное отображение экранов настроек
         AnimatedVisibility(
