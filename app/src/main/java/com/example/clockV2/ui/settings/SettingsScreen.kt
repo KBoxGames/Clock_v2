@@ -1,7 +1,7 @@
+
+// 8 SettingsScreen.kt
 package com.example.clockV2.ui.settings
 
-
-import android.annotation.SuppressLint
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -21,6 +21,8 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -29,24 +31,24 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.clockV2.ui.main.SettingsScreenState
+import com.example.clockV2.ui.main.MainViewModel
+import com.example.clockV2.ui.main.state.ClockUiEvent
 import com.example.clockV2.ui.theme.BorderColor
 
-@SuppressLint("UnusedBoxWithConstraintsScope")
+
 @Composable
 fun SettingsScreen(
+    viewModel: MainViewModel,
     onClose : () -> Unit,
     onFontsClick : () -> Unit,
     onFontSizeClick : () -> Unit
 ) {
 
-    val isSecond = remember { mutableStateOf(false) }
-    val isDate = remember { mutableStateOf(false) }
+     val uiState by viewModel.uiState.collectAsState()
 
     BoxWithConstraints (modifier = Modifier
         .fillMaxSize().clickable(onClick = onClose),
-        //.padding(30.dp),
-        Alignment.BottomStart
+        contentAlignment = Alignment.BottomStart
         ) {
             val isPortrait = maxHeight > maxWidth
             var fractionH: Float
@@ -94,19 +96,18 @@ fun SettingsScreen(
                         disabledContentColor = Color.Transparent,
                         containerColor = Color.DarkGray
                     ),
-                    onClick = {isSecond.value = !isSecond.value}) {
+                    onClick = {viewModel.onEvent(ClockUiEvent.ToggleSecond)}) {
 
 
 
                     Row (modifier = Modifier.fillMaxWidth(),
-                        Arrangement.Center,
+                       horizontalArrangement = Arrangement.Center,
                         verticalAlignment = Alignment.CenterVertically
 
                     ){
                         Checkbox(
-                        checked = isSecond.value,
-                        onCheckedChange = {newState ->
-                            isSecond.value = newState
+                        checked = uiState.isSecond,
+                        onCheckedChange = {viewModel.onEvent(ClockUiEvent.ToggleSecond)
                         },
                     )
                         Box(modifier = Modifier.fillMaxWidth(),
@@ -132,14 +133,15 @@ fun SettingsScreen(
                     ),
                     onClick = {
                         onFontSizeClick
-                        isDate.value = !isDate.value}) {
+                        viewModel.onEvent(ClockUiEvent.ToggleData)
+                    }) {
 
                     Row(modifier = Modifier.fillMaxWidth(),
                         Arrangement.Center,
                         verticalAlignment = Alignment.CenterVertically) {
-                        Checkbox(checked = isDate.value,
-                            onCheckedChange = {newState ->
-                                isDate.value = newState
+                        Checkbox(checked = uiState.isDate,
+                            onCheckedChange = {viewModel.onEvent(ClockUiEvent.ToggleData)
+
                             })
 
                         Box(modifier = Modifier.fillMaxWidth(),
@@ -148,10 +150,10 @@ fun SettingsScreen(
                         }
 
                     }
-
-
-                } }
+                }
+            }
     }
 }
+// 8 SettingsScreen.kt
 
 

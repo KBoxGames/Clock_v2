@@ -1,5 +1,6 @@
-package com.example.clockV2.ui.settings
 
+// 6 SettingsColorFont.kt
+package com.example.clockV2.ui.settings
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -16,20 +17,13 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowLeft
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
-import androidx.compose.material.icons.filled.KeyboardArrowLeft
-import androidx.compose.material.icons.filled.KeyboardArrowRight
-import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.res.vectorResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.clockV2.ui.theme.B2
 import com.example.clockV2.ui.theme.B3
@@ -111,8 +105,7 @@ Row(modifier = Modifier.fillMaxWidth()
         contentDescription = "вперед",
         modifier = Modifier.size(50.dp)
            )
-}
-
-
+        }
     }
 }
+// 6 SettingsColorFont.kt

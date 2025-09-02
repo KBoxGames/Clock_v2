@@ -1,3 +1,4 @@
+//10 SettingsTypeFont.kt
 package com.example.clockV2.ui.settings
 
 import androidx.compose.foundation.clickable
@@ -239,3 +240,4 @@ fun BlockFontSettings(fractW: Float = 0.95f, fractH: Float = 0.8f)
         Spacer(Modifier.height(20.dp))
     }
 }
+//10 SettingsTypeFont.kt

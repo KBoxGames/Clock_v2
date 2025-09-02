@@ -62,6 +62,8 @@ fun MainScreen(viewModel: MainViewModel) {
     var timerJob by remember { mutableStateOf<Job?>(null) }
     var settingsScreenState by remember { mutableStateOf(SettingsScreenState.HIDDEN) }
 
+
+
     BoxWithConstraints(
         modifier = Modifier
             .fillMaxSize()
@@ -132,6 +134,7 @@ fun MainScreen(viewModel: MainViewModel) {
                 when (settingsScreenState) {
                     SettingsScreenState.MAIN -> {
                         SettingsScreen(
+                            viewModel,
                             onClose = { settingsScreenState = SettingsScreenState.HIDDEN },
                             onFontsClick = { settingsScreenState = SettingsScreenState.FONTS },
                             onFontSizeClick = { settingsScreenState = SettingsScreenState.FONT_SIZE }
@@ -147,7 +150,9 @@ fun MainScreen(viewModel: MainViewModel) {
                     }
                     SettingsScreenState.FONT_SIZE -> {
                         SettingsSizeFont(
-                            onClose = { settingsScreenState = SettingsScreenState.MAIN })
+                            onClose = {  settingsScreenState = SettingsScreenState.MAIN },
+                            viewModel = viewModel
+                        )
                     }
                     SettingsScreenState.FONT_COLOR -> {
                         SettingsColorFont(
@@ -235,3 +240,4 @@ fun ButtonBlockLandscape(showSettings: () -> Unit) {
         }
     }
 }
+// 4 MainScreen.kt

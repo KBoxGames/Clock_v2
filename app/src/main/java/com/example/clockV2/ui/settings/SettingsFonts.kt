@@ -1,3 +1,5 @@
+
+// 7 SettingsFonts.kt
 package com.example.clockV2.ui.settings
 
 import androidx.compose.foundation.BorderStroke
@@ -22,7 +24,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.clockV2.ui.main.SettingsScreenState
 import com.example.clockV2.ui.theme.BorderColor
 
 @Composable
@@ -115,3 +116,4 @@ fun SettingsFonts(
 
     }
 }
+// 7 SettingsFonts.kt

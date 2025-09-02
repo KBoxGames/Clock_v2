@@ -1,3 +1,4 @@
+// 11 Color.kt
 package com.example.clockV2.ui.theme
 
 import androidx.compose.ui.graphics.Color
@@ -45,3 +46,4 @@ val PR1= Color(0xFFFF0026)
 val PR2= Color(0xFFC90020)
 val PR3= Color(0xFF910019)
 
+// 11 Color.kt
