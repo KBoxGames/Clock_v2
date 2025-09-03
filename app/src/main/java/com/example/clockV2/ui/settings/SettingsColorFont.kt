@@ -69,7 +69,7 @@ val colorFonts = listOf<Color>(
 fun itemColor(color: Color, onClose: () -> Unit)
 {
     //Добавить выделение текущего цвета
-    var colorBox = remember { mutableStateOf(Color.Black) }
+    val colorBox = remember { mutableStateOf(Color.Black) }
     Box(modifier = Modifier.size(50.dp)
         .background(color)
         .border(4.dp,color = colorBox.value)

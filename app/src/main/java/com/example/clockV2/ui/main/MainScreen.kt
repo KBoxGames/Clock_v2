@@ -190,7 +190,7 @@ fun ClockDisplay(viewModel: MainViewModel,uiState: ClockUiState, offset: Float) 
         fontFamily = uiState.fontFamily,
         isShowDate = uiState.isDate,
         offset = offset,
-        viewModel = viewModel
+
     )
 }
 

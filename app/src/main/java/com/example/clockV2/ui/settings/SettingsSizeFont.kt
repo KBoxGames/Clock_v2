@@ -1,8 +1,6 @@
 // 9 SettingsSizeFont.kt
 package com.example.clockV2.ui.settings
 
-import android.content.res.Configuration
-import android.content.res.Resources
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -14,7 +12,6 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Slider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -29,7 +26,7 @@ import com.example.clockV2.ui.main.state.ClockUiEvent
 fun SettingsSizeFont(viewModel: MainViewModel,onClose: () -> Unit) {
 
     val uiState by viewModel.uiState.collectAsState()
-    var fontSize = uiState.textSize.value
+    val fontSize = uiState.textSize.value
 
 
     Box(modifier = Modifier.fillMaxSize().clickable(onClick = onClose),

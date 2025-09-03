@@ -1,8 +1,6 @@
 // 3 CalculateDynamicSizeFont.kt
 package com.example.clockV2.ui.main.textUtilits
 
-import android.content.res.Configuration
-import android.content.res.Resources
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -30,13 +28,11 @@ import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.clockV2.ui.main.MainViewModel
-import com.example.clockV2.ui.main.state.ClockUiEvent
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DynamicText(
-    viewModel: MainViewModel,
     textTime: String,
     maxTextSize: TextUnit = 200.sp,
     colorText: Color = Color.Black,
