@@ -42,9 +42,16 @@ fun DynamicText(
     isShowDate: Boolean,
     offset : Float = 0f
 ) {
-    var currentSize by remember { mutableStateOf(maxTextSize) }
-    var timeOverflow by remember { mutableStateOf(false) }
-    var dateOverflow by remember { mutableStateOf(false) }
+    var currentSize by remember(maxTextSize) { mutableStateOf(maxTextSize) }
+    var timeOverflow by remember { mutableStateOf(false) }  // Переполнение времени (выходит за рамки экрана)
+    var dateOverflow by remember { mutableStateOf(false) }  // Переполнение Даты
+
+    // Сбрасываем currentSize при изменении maxTextSize
+    LaunchedEffect(maxTextSize) {
+        currentSize = maxTextSize
+        timeOverflow = false
+        dateOverflow = false
+    }
 
     // Сбрасываем переполнение даты при скрытии
     LaunchedEffect(isShowDate) {
@@ -63,7 +70,7 @@ fun DynamicText(
             }
         }
     }
-
+    // Форматирование текста с разным размером для часов/минут и секунд
     val formattedText = remember(textTime, currentSize) {
         formatText(textTime, currentSize, 0.3f)
     }
@@ -80,7 +87,7 @@ fun DynamicText(
                     textAlign = TextAlign.Center,
                     softWrap = false,
                     onTextLayout = { textLayoutResult ->
-                        timeOverflow = textLayoutResult.didOverflowWidth || textLayoutResult.didOverflowHeight
+                        timeOverflow = textLayoutResult.didOverflowWidth || textLayoutResult.didOverflowHeight  // Проверка на переполнение по ширине и высоте
                     }
                 )
 
@@ -92,18 +99,19 @@ fun DynamicText(
                     style = style.copy(fontFamily = FontFamily.SansSerif),
                     textAlign = TextAlign.Center,
                     softWrap = false,
-                    fontSize = currentSize * 0.15f,
+                    fontSize = currentSize * 0.15f, // Размер шрифта даты меньше основного
                     onTextLayout = { textLayoutResult ->
                         dateOverflow = textLayoutResult.didOverflowWidth || textLayoutResult.didOverflowHeight
                     }
                 )
             }
 
-            Spacer(Modifier.height(offset.dp))
+            Spacer(Modifier.height(offset.dp)) // Отступ для адаптации под ориентацию
         }
     }
 }
 
+// Форматирование текста: часы/минуты - крупно, секунды - мельче
 private fun formatText(
     text: String,
     textSize: TextUnit,

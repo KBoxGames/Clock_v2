@@ -53,6 +53,7 @@ fun SettingsScreen(
             val isPortrait = maxHeight > maxWidth
             var fractionH: Float
             var fractionW: Float
+        // Определение размера карточки в зависимости от ориентации
         if (isPortrait)
             {
                 fractionW = 1f
@@ -155,5 +156,3 @@ fun SettingsScreen(
     }
 }
 // 8 SettingsScreen.kt
-
-

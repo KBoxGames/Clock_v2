@@ -58,8 +58,8 @@ enum class SettingsScreenState {
 @Composable
 fun MainScreen(viewModel: MainViewModel) {
     val uiState by viewModel.uiState.collectAsState()
-    var isShowButton by remember { mutableStateOf(false) }
-    var timerJob by remember { mutableStateOf<Job?>(null) }
+    var isShowButton by remember { mutableStateOf(false) } // Показать/скрыть кнопки
+    var timerJob by remember { mutableStateOf<Job?>(null) } // таймер автоскрытия кнопок
     var settingsScreenState by remember { mutableStateOf(SettingsScreenState.HIDDEN) }
 
 
@@ -85,6 +85,7 @@ fun MainScreen(viewModel: MainViewModel) {
         val isPortrait = maxHeight > maxWidth
         val offset = if (isPortrait) 300f else 0f
 
+        // Отображение кнопок в зависимости от ориентации
         if (!isPortrait) {
             Row(
                 modifier = Modifier.fillMaxWidth(),
