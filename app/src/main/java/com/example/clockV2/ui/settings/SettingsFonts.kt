@@ -1,4 +1,3 @@
-
 // 7 SettingsFonts.kt
 package com.example.clockV2.ui.settings
 
@@ -85,13 +84,13 @@ fun SettingsFonts(
                 ),
                 onClick = onFontColorClick) {
 
-                    Box(modifier = Modifier.fillMaxWidth(),
-                        contentAlignment = Alignment.CenterStart
-                    ) {
-                        Text("Цвет шрифта", fontSize = 20.sp)
-                    }
+                Box(modifier = Modifier.fillMaxWidth(),
+                    contentAlignment = Alignment.CenterStart
+                ) {
+                    Text("Цвет шрифта", fontSize = 20.sp)
+                }
 
-                            }
+            }
 
             Spacer(Modifier.height(8.dp))
             Button(
@@ -107,10 +106,10 @@ fun SettingsFonts(
                 ),
                 onClick = onFontTypeClick) {
 
-                    Box(modifier = Modifier.fillMaxWidth(),
-                        contentAlignment = Alignment.CenterStart) {
-                        Text(" Шрифт", fontSize = 20.sp)
-                    }
+                Box(modifier = Modifier.fillMaxWidth(),
+                    contentAlignment = Alignment.CenterStart) {
+                    Text(" Шрифт", fontSize = 20.sp)
+                }
             }
         }
 

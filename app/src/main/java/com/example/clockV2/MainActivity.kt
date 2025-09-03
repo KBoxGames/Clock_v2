@@ -1,4 +1,3 @@
-
 // 12 MainActivity.kt
 package com.example.clockV2
 
@@ -81,9 +80,4 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-
-
-
-
 // 12 MainActivity.kt
-

@@ -1,4 +1,3 @@
-
 // 8 SettingsScreen.kt
 package com.example.clockV2.ui.settings
 
@@ -44,31 +43,31 @@ fun SettingsScreen(
     onFontSizeClick : () -> Unit
 ) {
 
-     val uiState by viewModel.uiState.collectAsState()
+    val uiState by viewModel.uiState.collectAsState()
 
     BoxWithConstraints (modifier = Modifier
         .fillMaxSize().clickable(onClick = onClose),
         contentAlignment = Alignment.BottomStart
-        ) {
-            val isPortrait = maxHeight > maxWidth
-            var fractionH: Float
-            var fractionW: Float
+    ) {
+        val isPortrait = maxHeight > maxWidth
+        var fractionH: Float
+        var fractionW: Float
         // Определение размера карточки в зависимости от ориентации
         if (isPortrait)
-            {
-                fractionW = 1f
-                fractionH = 0.35f
-            } else
-            {
-                fractionW = 0.5f
-                fractionH = 0.8f
-            }
-            Card(modifier = Modifier
-                .fillMaxWidth(fractionW).fillMaxHeight(fractionH)
-                .clip(RoundedCornerShape(40.dp)),
-                colors = CardDefaults.cardColors(containerColor = Color(0xFF666161))
-                ) {
-                Button(
+        {
+            fractionW = 1f
+            fractionH = 0.35f
+        } else
+        {
+            fractionW = 0.5f
+            fractionH = 0.8f
+        }
+        Card(modifier = Modifier
+            .fillMaxWidth(fractionW).fillMaxHeight(fractionH)
+            .clip(RoundedCornerShape(40.dp)),
+            colors = CardDefaults.cardColors(containerColor = Color(0xFF666161))
+        ) {
+            Button(
                 modifier = Modifier
                     .weight(1f)
                     .fillMaxWidth(),
@@ -80,79 +79,79 @@ fun SettingsScreen(
                     containerColor = Color.DarkGray
                 ),
                 onClick = onFontsClick) {
-                    Box(modifier = Modifier.fillMaxWidth(),
-                        contentAlignment = Alignment.CenterEnd) {
-                        Text("Настройка шрифта", fontSize = 20.sp)
-                    }
+                Box(modifier = Modifier.fillMaxWidth(),
+                    contentAlignment = Alignment.CenterEnd) {
+                    Text("Настройка шрифта", fontSize = 20.sp)
+                }
             }
-                Spacer(Modifier.height(8.dp))
-                Button(
-                    modifier = Modifier
-                        .weight(1f)
-                        .fillMaxWidth(),
-                    border = BorderStroke(2.dp, color = BorderColor),
-                    colors = ButtonColors(
-                        contentColor = Color.White,
-                        disabledContainerColor = Color.Transparent,
-                        disabledContentColor = Color.Transparent,
-                        containerColor = Color.DarkGray
-                    ),
-                    onClick = {viewModel.onEvent(ClockUiEvent.ToggleSecond)}) {
+            Spacer(Modifier.height(8.dp))
+            Button(
+                modifier = Modifier
+                    .weight(1f)
+                    .fillMaxWidth(),
+                border = BorderStroke(2.dp, color = BorderColor),
+                colors = ButtonColors(
+                    contentColor = Color.White,
+                    disabledContainerColor = Color.Transparent,
+                    disabledContentColor = Color.Transparent,
+                    containerColor = Color.DarkGray
+                ),
+                onClick = {viewModel.onEvent(ClockUiEvent.ToggleSecond)}) {
 
 
 
-                    Row (modifier = Modifier.fillMaxWidth(),
-                       horizontalArrangement = Arrangement.Center,
-                        verticalAlignment = Alignment.CenterVertically
+                Row (modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.Center,
+                    verticalAlignment = Alignment.CenterVertically
 
-                    ){
-                        Checkbox(
+                ){
+                    Checkbox(
                         checked = uiState.isSecond,
                         onCheckedChange = {viewModel.onEvent(ClockUiEvent.ToggleSecond)
                         },
                     )
-                        Box(modifier = Modifier.fillMaxWidth(),
-                            contentAlignment = Alignment.CenterEnd
-                        ) {
-                            Text("Отображать секунды", fontSize = 20.sp)
-                        }
-
+                    Box(modifier = Modifier.fillMaxWidth(),
+                        contentAlignment = Alignment.CenterEnd
+                    ) {
+                        Text("Отображать секунды", fontSize = 20.sp)
                     }
 
                 }
-                Spacer(Modifier.height(8.dp))
-                Button(
-                    modifier = Modifier
-                        .weight(1f)
-                        .fillMaxWidth(),
-                    border = BorderStroke(2.dp, color = BorderColor),
-                    colors = ButtonColors(
-                        contentColor = Color.White,
-                        disabledContainerColor = Color.Transparent,
-                        disabledContentColor = Color.Transparent,
-                        containerColor = Color.DarkGray
-                    ),
-                    onClick = {
-                        onFontSizeClick
-                        viewModel.onEvent(ClockUiEvent.ToggleData)
-                    }) {
 
-                    Row(modifier = Modifier.fillMaxWidth(),
-                        Arrangement.Center,
-                        verticalAlignment = Alignment.CenterVertically) {
-                        Checkbox(checked = uiState.isDate,
-                            onCheckedChange = {viewModel.onEvent(ClockUiEvent.ToggleData)
+            }
+            Spacer(Modifier.height(8.dp))
+            Button(
+                modifier = Modifier
+                    .weight(1f)
+                    .fillMaxWidth(),
+                border = BorderStroke(2.dp, color = BorderColor),
+                colors = ButtonColors(
+                    contentColor = Color.White,
+                    disabledContainerColor = Color.Transparent,
+                    disabledContentColor = Color.Transparent,
+                    containerColor = Color.DarkGray
+                ),
+                onClick = {
+                    onFontSizeClick
+                    viewModel.onEvent(ClockUiEvent.ToggleData)
+                }) {
 
-                            })
+                Row(modifier = Modifier.fillMaxWidth(),
+                    Arrangement.Center,
+                    verticalAlignment = Alignment.CenterVertically) {
+                    Checkbox(checked = uiState.isDate,
+                        onCheckedChange = {viewModel.onEvent(ClockUiEvent.ToggleData)
 
-                        Box(modifier = Modifier.fillMaxWidth(),
-                            contentAlignment = Alignment.CenterEnd) {
-                            Text(" Отображать дату", fontSize = 20.sp)
-                        }
+                        })
 
+                    Box(modifier = Modifier.fillMaxWidth(),
+                        contentAlignment = Alignment.CenterEnd) {
+                        Text(" Отображать дату", fontSize = 20.sp)
                     }
+
                 }
             }
+        }
     }
 }
 // 8 SettingsScreen.kt

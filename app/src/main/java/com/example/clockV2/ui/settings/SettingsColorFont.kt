@@ -1,4 +1,3 @@
-
 // 6 SettingsColorFont.kt
 package com.example.clockV2.ui.settings
 
@@ -60,7 +59,7 @@ import com.example.clockV2.ui.theme.YO1
 
 
 val colorFonts = listOf<Color>(
-     Wh, Rd, Or,Or1,YO,YO1,YL,YG,YG2,
+    Wh, Rd, Or,Or1,YO,YO1,YL,YG,YG2,
     YG1,Gr,Gr1,Gr2,Gr3,GB,GB1,GB2,Bl,
     B2,B3,BD,BD1,BD2,BP,BP1,BP2,BP3,
     Pk,PR,PR1,PR2,PR3)
@@ -88,23 +87,23 @@ fun SettingsColorFont(onClose:()->Unit) {
         contentAlignment = Alignment.TopStart
     )
     {
-Row(modifier = Modifier.fillMaxWidth()
-    .offset(0.dp,30.dp)
-    .border(10.dp, Color.Black),
-    horizontalArrangement = Arrangement.SpaceBetween) {
-    Icon(imageVector = Icons.AutoMirrored.Filled.KeyboardArrowLeft,
-        contentDescription = "назад",
-        modifier = Modifier.size(50.dp)
+        Row(modifier = Modifier.fillMaxWidth()
+            .offset(0.dp,30.dp)
+            .border(10.dp, Color.Black),
+            horizontalArrangement = Arrangement.SpaceBetween) {
+            Icon(imageVector = Icons.AutoMirrored.Filled.KeyboardArrowLeft,
+                contentDescription = "назад",
+                modifier = Modifier.size(50.dp)
             )
-    LazyRow(modifier = Modifier.weight(1f)) {
-        items(colorFonts) { item ->
-            itemColor(item, onClose)
-        }
-    }
-    Icon(imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
-        contentDescription = "вперед",
-        modifier = Modifier.size(50.dp)
-           )
+            LazyRow(modifier = Modifier.weight(1f)) {
+                items(colorFonts) { item ->
+                    itemColor(item, onClose)
+                }
+            }
+            Icon(imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
+                contentDescription = "вперед",
+                modifier = Modifier.size(50.dp)
+            )
         }
     }
 }

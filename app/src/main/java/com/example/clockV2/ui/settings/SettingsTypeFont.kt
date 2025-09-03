@@ -59,7 +59,7 @@ val hoursList = listOf(
 fun SettingsTypeFon(onClose:()->Unit) {
 
     BoxWithConstraints(modifier = Modifier.fillMaxSize().clickable(onClick = onClose),
-         contentAlignment = Alignment.BottomEnd) {
+        contentAlignment = Alignment.BottomEnd) {
 
         var isPortrait by remember { mutableStateOf(false) }
         if (maxHeight < maxWidth) isPortrait = true
@@ -80,14 +80,14 @@ fun SettingsTypeFon(onClose:()->Unit) {
             Card (modifier = Modifier
                 .fillMaxHeight(0.65f))
             {
-            Box(modifier = Modifier.padding(8.dp)) {
-                Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                    BlockFont(0.8f, 0.3f)
-                    Spacer(Modifier.height(8.dp))
-                    BlockFontSettings(0.8f,1f)
-                }
+                Box(modifier = Modifier.padding(8.dp)) {
+                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                        BlockFont(0.8f, 0.3f)
+                        Spacer(Modifier.height(8.dp))
+                        BlockFontSettings(0.8f,1f)
+                    }
 
-            }
+                }
 
             }
         }

@@ -1,4 +1,3 @@
-
 // 5 MainViewModel.kt
 package com.example.clockV2.ui.main
 
@@ -39,7 +38,7 @@ class MainViewModel : ViewModel() {
                 _uiState.update { it.copy(textSize = event.newTextSize) }
             }
 
-            is ClockUiEvent.FontColorChange -> {
+             is ClockUiEvent.FontColorChange -> {
                 _uiState.update { it.copy(textColor = event.newTextColor) }
             }
 
@@ -49,11 +48,11 @@ class MainViewModel : ViewModel() {
 
             ClockUiEvent.ToggleData -> {
                 val newValue = !_uiState.value.isDate
-            _uiState.update { it.copy(isDate = newValue) }
+                _uiState.update { it.copy(isDate = newValue) }
             }
             ClockUiEvent.ToggleSecond -> {
                 val newValue = !_uiState.value.isSecond
-               _uiState.update { it.copy(isSecond = newValue) }
+                _uiState.update { it.copy(isSecond = newValue) }
             }
         }
 

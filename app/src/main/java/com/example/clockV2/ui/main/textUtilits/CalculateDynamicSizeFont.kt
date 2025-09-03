@@ -1,6 +1,8 @@
 // 3 CalculateDynamicSizeFont.kt
 package com.example.clockV2.ui.main.textUtilits
 
+import android.content.res.Configuration
+import android.content.res.Resources
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -27,11 +29,14 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.clockV2.ui.main.MainViewModel
+import com.example.clockV2.ui.main.state.ClockUiEvent
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DynamicText(
+    viewModel: MainViewModel,
     textTime: String,
     maxTextSize: TextUnit = 200.sp,
     colorText: Color = Color.Black,
@@ -46,14 +51,13 @@ fun DynamicText(
     var timeOverflow by remember { mutableStateOf(false) }  // Переполнение времени (выходит за рамки экрана)
     var dateOverflow by remember { mutableStateOf(false) }  // Переполнение Даты
 
-    // Сбрасываем currentSize при изменении maxTextSize
-    LaunchedEffect(maxTextSize) {
-        currentSize = maxTextSize
-        timeOverflow = false
-        dateOverflow = false
-    }
 
     // Сбрасываем переполнение даты при скрытии
+
+    LaunchedEffect(maxTextSize) {
+        currentSize = maxTextSize
+    }
+
     LaunchedEffect(isShowDate) {
         if (!isShowDate) dateOverflow = false
     }
@@ -69,6 +73,7 @@ fun DynamicText(
                 dateOverflow = false
             }
         }
+
     }
     // Форматирование текста с разным размером для часов/минут и секунд
     val formattedText = remember(textTime, currentSize) {
@@ -79,17 +84,17 @@ fun DynamicText(
 
         Column(
             horizontalAlignment = Alignment.CenterHorizontally) {
-                    Text(
-                    text = formattedText,
-                    color = colorText,
-                    maxLines = maxLine,
-                    style = style.copy(fontFamily = fontFamily),
-                    textAlign = TextAlign.Center,
-                    softWrap = false,
-                    onTextLayout = { textLayoutResult ->
-                        timeOverflow = textLayoutResult.didOverflowWidth || textLayoutResult.didOverflowHeight  // Проверка на переполнение по ширине и высоте
-                    }
-                )
+            Text(
+                text = formattedText,
+                color = colorText,
+                maxLines = maxLine,
+                style = style.copy(fontFamily = fontFamily),
+                textAlign = TextAlign.Center,
+                softWrap = false,
+                onTextLayout = { textLayoutResult ->
+                    timeOverflow = textLayoutResult.didOverflowWidth || textLayoutResult.didOverflowHeight  // Проверка на переполнение по ширине и высоте
+                }
+            )
 
 
             if (isShowDate && textDate != null) {

@@ -110,7 +110,7 @@ fun MainScreen(viewModel: MainViewModel) {
             }
         }
 
-        ClockDisplay(uiState = uiState, offset)
+        ClockDisplay(viewModel,uiState = uiState, offset)
 
         // Анимированное отображение экранов настроек
         AnimatedVisibility(
@@ -153,7 +153,7 @@ fun MainScreen(viewModel: MainViewModel) {
                         SettingsSizeFont(
                             onClose = {  settingsScreenState = SettingsScreenState.MAIN },
                             viewModel = viewModel
-                        )
+                            )
                     }
                     SettingsScreenState.FONT_COLOR -> {
                         SettingsColorFont(
@@ -178,8 +178,9 @@ fun MainScreen(viewModel: MainViewModel) {
 }
 
 @Composable
-fun ClockDisplay(uiState: ClockUiState, offset: Float) {
+fun ClockDisplay(viewModel: MainViewModel,uiState: ClockUiState, offset: Float) {
     DynamicText(
+
         textTime = uiState.textScreen,
         colorText = uiState.textColor,
         maxTextSize = uiState.textSize,
@@ -188,7 +189,8 @@ fun ClockDisplay(uiState: ClockUiState, offset: Float) {
         textDate = uiState.dataScreen,
         fontFamily = uiState.fontFamily,
         isShowDate = uiState.isDate,
-        offset = offset
+        offset = offset,
+        viewModel = viewModel
     )
 }
 
