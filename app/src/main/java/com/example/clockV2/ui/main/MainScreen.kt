@@ -110,7 +110,7 @@ fun MainScreen(viewModel: MainViewModel) {
             }
         }
 
-        ClockDisplay(viewModel,uiState = uiState, offset)
+        ClockDisplay(uiState = uiState, offset)
 
         // Анимированное отображение экранов настроек
         AnimatedVisibility(
@@ -178,7 +178,7 @@ fun MainScreen(viewModel: MainViewModel) {
 }
 
 @Composable
-fun ClockDisplay(viewModel: MainViewModel,uiState: ClockUiState, offset: Float) {
+fun ClockDisplay(uiState: ClockUiState, offset: Float) {
     DynamicText(
 
         textTime = uiState.textScreen,

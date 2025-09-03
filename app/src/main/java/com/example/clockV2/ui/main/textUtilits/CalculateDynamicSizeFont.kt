@@ -27,7 +27,7 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.clockV2.ui.main.MainViewModel
+
 
 
 @OptIn(ExperimentalMaterial3Api::class)
