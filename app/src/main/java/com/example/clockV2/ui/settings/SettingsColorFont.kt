@@ -66,7 +66,7 @@ val colorFonts = listOf<Color>(
 
 
 @Composable
-fun itemColor(color: Color, onClose: () -> Unit)
+fun itemColor(color: Color, onSelectColor: (Color) -> Unit, onClose: () -> Unit)
 {
     //Добавить выделение текущего цвета
     val colorBox = remember { mutableStateOf(Color.Black) }
@@ -75,13 +75,15 @@ fun itemColor(color: Color, onClose: () -> Unit)
         .border(4.dp,color = colorBox.value)
         .clickable(onClick = {
             colorBox.value = Color.White
-            onClose()
+            onSelectColor(color)
+            onClose
+
         })
     ){}
 }
 
 @Composable
-fun SettingsColorFont(onClose:()->Unit) {
+fun SettingsColorFont(onClose:()->Unit, onSelectColor:(Color)->Unit) {
     Box(
         modifier = Modifier.fillMaxSize().clickable(onClick = onClose),
         contentAlignment = Alignment.TopStart
@@ -96,8 +98,9 @@ fun SettingsColorFont(onClose:()->Unit) {
                 modifier = Modifier.size(50.dp)
             )
             LazyRow(modifier = Modifier.weight(1f)) {
-                items(colorFonts) { item ->
-                    itemColor(item, onClose)
+                items(colorFonts) { color ->
+                    itemColor(color,onSelectColor,onClose)
+
                 }
             }
             Icon(imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,

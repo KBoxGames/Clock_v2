@@ -3,6 +3,7 @@ package com.example.clockV2.ui.main
 
 import android.util.Log
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.ViewModel
 import com.example.clockV2.ui.main.state.ClockUiEvent
@@ -13,6 +14,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
+import kotlin.random.Random
 
 class MainViewModel : ViewModel() {
     private val _uiState = MutableStateFlow(ClockUiState(
@@ -23,7 +25,8 @@ class MainViewModel : ViewModel() {
         isDate = true,
         isSecond = true,
         fontFamily = led2,
-        availableFont = availableFonts
+        availableFont = availableFonts,
+        isAutoChangeFont = false
 
     ))
 
@@ -54,9 +57,25 @@ class MainViewModel : ViewModel() {
                 val newValue = !_uiState.value.isSecond
                 _uiState.update { it.copy(isSecond = newValue) }
             }
+
+            ClockUiEvent.ToggleACF -> {
+                val newValue = !_uiState.value.isAutoChangeFont
+                _uiState.update { it.copy(isAutoChangeFont = newValue) }
+            }
+
+
+
         }
 
     }
+
+    fun AutoChangeFont(){
+         _uiState.update {
+             it.copy(fontFamily = availableFonts[Random.nextInt(availableFonts.size)].first)
+                        }
+    }
+
+
 
 }
 

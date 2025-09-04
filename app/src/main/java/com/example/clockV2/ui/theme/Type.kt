@@ -46,17 +46,17 @@ val led4 = FontFamily(
 )
 
 val availableFonts = listOf(
-    FontFamily.Default to "Default",
-    FontFamily.Serif to "Serif",
-    FontFamily.Cursive to "Сursive" ,
-    FontFamily.Monospace to "Monospace",
-    FontFamily.SansSerif to "SsansSerif",
-    art1 to "art1",
-    art2 to "art2",
-    art3 to "art3",
-    art4 to "art4",
-    led1 to "led1",
-    led2 to "led2",
-    led3 to "led3",
-    led4 to "led4"
+    FontFamily.Default to "Простой",
+    FontFamily.Serif to "Шриф",
+    FontFamily.Cursive to "Курсив" ,
+    FontFamily.Monospace to "Моно",
+    FontFamily.SansSerif to "С-Шриф",
+    art1 to "АРТ 1",
+    art2 to "АРТ 2",
+    art3 to "АРТ 3",
+    art4 to "АРТ 4",
+    led1 to "ЛЭД 1",
+    led2 to "ЛЭД 2",
+    led3 to "ЛЭД 3",
+    led4 to "ЛЭД 4"
 )

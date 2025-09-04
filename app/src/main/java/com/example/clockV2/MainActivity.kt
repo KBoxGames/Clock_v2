@@ -11,7 +11,6 @@ import androidx.activity.compose.setContent
 import androidx.annotation.RequiresApi
 import androidx.compose.material3.Surface
 import androidx.core.view.WindowCompat
-import com.example.clockV2.navigation.AppNavigation
 import com.example.clockV2.ui.theme.ЧасыTheme
 
 

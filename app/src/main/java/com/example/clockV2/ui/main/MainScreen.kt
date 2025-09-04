@@ -36,6 +36,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
+import com.example.clockV2.ui.main.state.ClockUiEvent
 import com.example.clockV2.ui.main.state.ClockUiState
 import com.example.clockV2.ui.main.textUtilits.DynamicText
 import com.example.clockV2.ui.settings.SettingsColorFont
@@ -54,14 +55,24 @@ enum class SettingsScreenState {
     HIDDEN, MAIN, FONTS, FONT_SIZE, FONT_COLOR, FONT_TYPE
 }
 
-@SuppressLint("UnusedBoxWithConstraintsScope")
+@SuppressLint("UnusedBoxWithConstraintsScope", "CoroutineCreationDuringComposition")
 @Composable
 fun MainScreen(viewModel: MainViewModel) {
     val uiState by viewModel.uiState.collectAsState()
     var isShowButton by remember { mutableStateOf(false) } // Показать/скрыть кнопки
     var timerJob by remember { mutableStateOf<Job?>(null) } // таймер автоскрытия кнопок
     var settingsScreenState by remember { mutableStateOf(SettingsScreenState.HIDDEN) }
+    var timerAChangeFont by remember { mutableStateOf<Job?>(null) } // таймер автосмены шрифта
+    var isAutoChange = remember { uiState.isAutoChangeFont }
 
+
+    if (isAutoChange){
+        timerAChangeFont?.cancel()
+        timerAChangeFont = CoroutineScope(Dispatchers.Main).launch {
+            delay( 10000)
+            viewModel.AutoChangeFont()
+        }
+    }
 
 
     BoxWithConstraints(
@@ -157,12 +168,22 @@ fun MainScreen(viewModel: MainViewModel) {
                     }
                     SettingsScreenState.FONT_COLOR -> {
                         SettingsColorFont(
-                            onClose = {settingsScreenState = SettingsScreenState.MAIN})
+                            onClose = { settingsScreenState = SettingsScreenState.MAIN },
+                            onSelectColor ={color ->
+                                viewModel.onEvent(ClockUiEvent.FontColorChange(color))
+                            }
+                        )
                     }
 
                     SettingsScreenState.FONT_TYPE -> {
-                        SettingsTypeFon (
-                            onClose = {settingsScreenState = SettingsScreenState.MAIN})
+                        SettingsTypeFon(
+                            onClose = { settingsScreenState = SettingsScreenState.MAIN },
+                            onSelectFontType = { font ->
+                                viewModel.onEvent(ClockUiEvent.FontFamilyChange(font))
+                            },
+                            currentFont = uiState.fontFamily,
+                            viewModel =viewModel
+                        )
                     }
 
                     SettingsScreenState.HIDDEN -> {
