@@ -2,6 +2,7 @@
 package com.example.clockV2.ui.settings
 
 
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -35,6 +36,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -45,7 +47,9 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.clockV2.ui.main.MainViewModel
 import com.example.clockV2.ui.main.state.ClockUiEvent
+import com.example.clockV2.ui.theme.Wh
 import com.example.clockV2.ui.theme.availableFonts
+import kotlinx.coroutines.launch
 
 
 val hoursList = listOf(
@@ -66,7 +70,7 @@ fun SettingsTypeFon(viewModel: MainViewModel,
         if (maxHeight < maxWidth) isPortrait = true
 
         if (isPortrait) {
-            Card(modifier = Modifier.fillMaxWidth(0.8f))
+            Card(modifier = Modifier.fillMaxWidth(0.85f))
             {
                 Row(horizontalArrangement = Arrangement.Center)
                 {
@@ -146,7 +150,8 @@ fun BlockFont(fractW: Float = 0.4f, fractH: Float = 0.8f,
                 Card(modifier = Modifier.fillMaxWidth()) {
                     Box(modifier = Modifier.padding(8.dp)) {
                         Row {
-                            LazyColumn(state = lazzyState) {
+                            LazyColumn(state = lazzyState,
+                                modifier = Modifier.weight(1f)) {
                                 itemsIndexed(availableFonts) { index, (fontFamily, fontName) ->
                                     val isSelected = fontFamily == currentFont
                                     Card(
@@ -187,19 +192,32 @@ fun BlockFont(fractW: Float = 0.4f, fractH: Float = 0.8f,
                                     }
                                 }
                             }
+                            val scope = rememberCoroutineScope()
                             Box(
-                                modifier = Modifier.fillMaxHeight(),
+
                                 contentAlignment = Alignment.TopEnd
                             ) {
                                 Column {
                                     Icon(
                                         imageVector = Icons.Default.KeyboardArrowUp,
-                                        contentDescription = "Вверх"
+                                        contentDescription = "Вверх",
+                                        modifier = Modifier.size(20.dp).clickable {
+                                            // Прокрутка вверх в корутине
+                                            scope.launch {
+                                                lazzyState.animateScrollToItem(0)
+                                            }
+                                        }
                                     )
                                     Spacer(Modifier.weight(1f))
                                     Icon(
                                         imageVector = Icons.Default.KeyboardArrowDown,
-                                        contentDescription = "Вниз"
+                                        contentDescription = "Вниз",
+                                        modifier = Modifier.size(20.dp).clickable {
+                                            // Прокрутка вниз в корутине
+                                            scope.launch {
+                                                lazzyState.animateScrollToItem(availableFonts.size - 1)
+                                            }
+                                        }
                                     )
                                 }
 

@@ -26,6 +26,7 @@ import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -62,17 +63,6 @@ fun MainScreen(viewModel: MainViewModel) {
     var isShowButton by remember { mutableStateOf(false) } // Показать/скрыть кнопки
     var timerJob by remember { mutableStateOf<Job?>(null) } // таймер автоскрытия кнопок
     var settingsScreenState by remember { mutableStateOf(SettingsScreenState.HIDDEN) }
-    var timerAChangeFont by remember { mutableStateOf<Job?>(null) } // таймер автосмены шрифта
-    var isAutoChange = remember { uiState.isAutoChangeFont }
-
-
-    if (isAutoChange){
-        timerAChangeFont?.cancel()
-        timerAChangeFont = CoroutineScope(Dispatchers.Main).launch {
-            delay( 10000)
-            viewModel.AutoChangeFont()
-        }
-    }
 
 
     BoxWithConstraints(
