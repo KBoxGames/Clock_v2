@@ -46,6 +46,7 @@ fun SettingsSizeFont(viewModel: MainViewModel,onClose: () -> Unit) {
                 fontSize,
                 onValueChange = { newState ->
                     viewModel.onEvent(ClockUiEvent.FontSizeChange(newState.sp))
+                    if (uiState.isMaxSizeText) viewModel.onEvent(ClockUiEvent.ToggleMSF)
                 },
                 valueRange = 50f..500f,
                 modifier = Modifier.fillMaxWidth(0.9f)

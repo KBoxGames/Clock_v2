@@ -11,6 +11,7 @@ sealed interface ClockUiEvent {
     data object ToggleSecond : ClockUiEvent // Переключение отображения секунд
     data object  ToggleData: ClockUiEvent // Переключение отображения даты
     data object  ToggleACF: ClockUiEvent // Переключение включения автосмены шрифта
+    data object  ToggleMSF: ClockUiEvent // Переключение макимального размера шрифта
     data class FontSizeChange (val newTextSize: TextUnit) : ClockUiEvent // Изменение размера шрифта
     data class FontColorChange (val newTextColor: Color) : ClockUiEvent //// Изменение цвета текста
     data class FontFamilyChange(val newFontFamily: FontFamily): ClockUiEvent  // Изменение шрифта

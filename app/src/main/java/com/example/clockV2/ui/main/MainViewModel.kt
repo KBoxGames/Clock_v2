@@ -29,14 +29,15 @@ class MainViewModel : ViewModel() {
         isSecond = true,
         fontFamily = led2,
         availableFont = availableFonts,
-        isAutoChangeFont = false
+        isAutoChangeFont = false,
+        isMaxSizeText = false
 
     ))
 
     val uiState: StateFlow<ClockUiState> = _uiState.asStateFlow()
 
     private var fontChangeTimer: Job? = null
-    private val fontChangeInterval = 10000L // 10 секунд
+    private val fontChangeInterval = 600000L // 10 секунд
 
     init {
         // Запускаем наблюдение за изменением состояния автосмены шрифта
@@ -69,6 +70,12 @@ class MainViewModel : ViewModel() {
             ClockUiEvent.ToggleSecond -> {
                 val newValue = !_uiState.value.isSecond
                 _uiState.update { it.copy(isSecond = newValue) }
+            }
+
+            ClockUiEvent.ToggleMSF -> {
+                val newValue = !_uiState.value.isMaxSizeText
+                _uiState.update { it.copy(isMaxSizeText = newValue) }
+                allwaysMaxSizeFont()
             }
 
             ClockUiEvent.ToggleACF -> {
@@ -117,7 +124,6 @@ class MainViewModel : ViewModel() {
         }
     }
 
-
     private fun stopFontChangeTimer() {
         fontChangeTimer?.cancel()
         fontChangeTimer = null
@@ -138,13 +144,12 @@ class MainViewModel : ViewModel() {
         }
     }
 
-    fun AutoChangeFont() {
-        if (_uiState.value.isAutoChangeFont) {
-            _uiState.update {
-                it.copy(fontFamily = availableFonts[Random.nextInt(availableFonts.size)].first)
-            }
+   private fun allwaysMaxSizeFont()
+    {
+        if (_uiState.value.isMaxSizeText)
+        {
+            _uiState.update { it.copy(textSize = 280.sp) }
         }
-
     }
 
 }

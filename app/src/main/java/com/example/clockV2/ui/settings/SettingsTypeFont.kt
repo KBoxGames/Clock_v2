@@ -2,7 +2,9 @@
 package com.example.clockV2.ui.settings
 
 
-import androidx.compose.foundation.border
+import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -18,7 +20,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
@@ -33,28 +34,22 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.clockV2.ui.main.MainViewModel
 import com.example.clockV2.ui.main.state.ClockUiEvent
-import com.example.clockV2.ui.theme.Wh
 import com.example.clockV2.ui.theme.availableFonts
 import kotlinx.coroutines.launch
+import androidx.compose.ui.Alignment
+import com.example.clockV2.ui.main.textUtilits.CircularNumberPicker
 
-
-val hoursList = listOf(
-    1,2,3,4,5,6,7,8,9,10,12,13,14,15,16,17,18,19,20,21,22,23,0
-)
 
 @Composable
 fun SettingsTypeFon(viewModel: MainViewModel,
@@ -98,7 +93,7 @@ fun SettingsTypeFon(viewModel: MainViewModel,
                             currentFont = currentFont
                         )
                         Spacer(Modifier.height(8.dp))
-                        BlockFontSettings(viewModel ,0.8f,1f)
+                        BlockFontSettings(viewModel ,0.8f,0.9f)
                     }
 
                 }
@@ -118,6 +113,7 @@ fun BlockFont(fractW: Float = 0.4f, fractH: Float = 0.8f,
     val currentIndex = availableFonts.indexOfFirst{it.first == currentFont}
         .takeIf { it != -1 } ?: 0
     val lazzyState = rememberLazyListState()
+
 
     LaunchedEffect(Unit) {
         if (currentIndex >= 0)
@@ -145,15 +141,29 @@ fun BlockFont(fractW: Float = 0.4f, fractH: Float = 0.8f,
                 .fillMaxHeight(fractH),
             colors = CardDefaults.cardColors(Color.Gray)
         ) {
-            Box(modifier = Modifier.padding(8.dp))
+            Box(modifier = Modifier.padding(5.dp))
             {
                 Card(modifier = Modifier.fillMaxWidth()) {
-                    Box(modifier = Modifier.padding(8.dp)) {
+                    Box(modifier = Modifier.padding(5.dp)) {
                         Row {
-                            LazyColumn(state = lazzyState,
-                                modifier = Modifier.weight(1f)) {
+                            LazyColumn(
+                                state = lazzyState,
+                                modifier = Modifier.weight(1f)
+                            ) {
                                 itemsIndexed(availableFonts) { index, (fontFamily, fontName) ->
                                     val isSelected = fontFamily == currentFont
+
+                                    // Анимированные свойства
+                                    val animatedCardColor by animateColorAsState(
+                                        targetValue = if (isSelected) Color.Gray else Color.DarkGray,
+                                        animationSpec = tween(durationMillis = 300)
+                                    )
+
+                                    val animatedPadding by animateDpAsState(
+                                        targetValue = if (isSelected) 20.dp else 16.dp,
+                                        animationSpec = tween(durationMillis = 300)
+                                    )
+
                                     Card(
                                         modifier = Modifier
                                             .fillMaxWidth()
@@ -162,16 +172,14 @@ fun BlockFont(fractW: Float = 0.4f, fractH: Float = 0.8f,
                                                 onSelectFontType(fontFamily)
                                                 onClose()
                                             },
-                                        colors = CardDefaults.cardColors(
-                                            containerColor = if (isSelected) Color.Gray else Color.DarkGray
-                                        )
+                                        colors = CardDefaults.cardColors(containerColor = animatedCardColor)
                                     ) {
                                         Row {
                                             Text(
                                                 text = "${index + 1}. $fontName",
                                                 fontSize = 18.sp,
                                                 color = Color.White,
-                                                modifier = Modifier.padding(16.dp)
+                                                modifier = Modifier.padding(animatedPadding)
                                             )
 
                                             Spacer(Modifier.weight(1f))
@@ -181,12 +189,11 @@ fun BlockFont(fractW: Float = 0.4f, fractH: Float = 0.8f,
                                                 fontSize = 18.sp,
                                                 fontFamily = fontFamily,
                                                 color = Color.White,
-                                                modifier = Modifier.padding(16.dp)
+                                                modifier = Modifier.padding(animatedPadding)
                                             )
                                         }
                                     }
 
-                                    // Добавляем разделитель между элементами, кроме последнего
                                     if (index < availableFonts.size - 1) {
                                         Spacer(modifier = Modifier.height(4.dp))
                                     }
@@ -235,6 +242,8 @@ fun BlockFont(fractW: Float = 0.4f, fractH: Float = 0.8f,
 fun BlockFontSettings(viewModel: MainViewModel,fractW: Float = 0.95f, fractH: Float = 0.8f)
 {
     var uiState = viewModel.uiState.collectAsState()
+    var selectedHours by remember { mutableStateOf(0) }
+    var selectedMinute by remember { mutableStateOf(0) }
 
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         Spacer(Modifier.height(8.dp))
@@ -246,11 +255,11 @@ fun BlockFontSettings(viewModel: MainViewModel,fractW: Float = 0.95f, fractH: Fl
                 .fillMaxHeight(fractH),
             colors = CardDefaults.cardColors(Color.Gray)
         ) {
-            Box(modifier = Modifier.padding(8.dp)) {
+            Box(modifier = Modifier.padding(5.dp)) {
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
 
                     Card() {
-                        Box(modifier = Modifier.padding(8.dp)) {
+                        Box(modifier = Modifier.padding(5.dp)) {
                             Column {
                                 Row(
                                     modifier = Modifier.fillMaxWidth(),
@@ -267,12 +276,13 @@ fun BlockFontSettings(viewModel: MainViewModel,fractW: Float = 0.95f, fractH: Fl
                                 ) {
                                     Text("Максимальный размер")
                                     Spacer(Modifier.weight(1f))
-                                    Switch(checked = true, onCheckedChange = {})
+                                    Switch(checked = uiState.value.isMaxSizeText,
+                                        onCheckedChange = {viewModel.onEvent(ClockUiEvent.ToggleMSF)})
                                 }
                             }
                         }
                     }
-                    Spacer(Modifier.height(8.dp))
+                    Spacer(Modifier.height(5.dp))
                     Card() {
                         Row(
                             modifier = Modifier.fillMaxWidth(),
@@ -280,44 +290,37 @@ fun BlockFontSettings(viewModel: MainViewModel,fractW: Float = 0.95f, fractH: Fl
                         ) {
                             Spacer(Modifier.height(50.dp).weight(1f))
                             Text("Интервал смены шрифта")
-                            Spacer(Modifier.height(50.dp).weight(1f))
+                            Spacer(Modifier.weight(1f))
 
                         }
                         Row(verticalAlignment = Alignment.CenterVertically) {
                             Spacer(Modifier.weight(1f))
-                            Column(modifier = Modifier.fillMaxHeight()) {
-                                Icon(
-                                    imageVector = Icons.Default.KeyboardArrowUp,
-                                    contentDescription = "Вверх"
-                                )
-                                Spacer(Modifier.weight(1f))
-                                Icon(
-                                    imageVector = Icons.Default.KeyboardArrowDown,
-                                    contentDescription = "Вниз"
-                                )
-                            }
-                            LazyColumn(
-                                modifier = Modifier.size(40.dp),
-
-                                horizontalAlignment = Alignment.CenterHorizontally
-                            ) {
-                                items(hoursList) { item ->
-                                    Text(item.toString(), fontSize = 30.sp)
-                                }
-                            }
+                            CircularNumberPicker(
+                                pickerSize = 60.dp,
+                                textSize = 35.sp,
+                                isBourder = false,
+                                isDivider = false,
+                                onValueSelected = { value ->
+                                    selectedHours = value
+                                },
+                                initialValue = selectedHours
+                            )
                             Text(":", fontSize = 30.sp)
-                            LazyColumn(
-                                modifier = Modifier.size(40.dp),
-                                horizontalAlignment = Alignment.CenterHorizontally
-                            ) {
-                                items(hoursList) { item ->
-                                    Text(item.toString(), fontSize = 30.sp)
-                                }
-                            }
+                            CircularNumberPicker(
+                                pickerSize = 60.dp,
+                                textSize = 35.sp,
+                                range = (0..60),
+                                isDivider = false,
+                                isBourder = false,
+                                onValueSelected = { value ->
+                                    selectedMinute = value
+                                },
+                                initialValue = selectedMinute
+                            )
                             Spacer(Modifier.weight(1f))
-
                         }
-                        Spacer(Modifier.height(8.dp))
+
+                        Spacer(Modifier.weight(1f))
 
                     }
                     Spacer(Modifier.height(8.dp))
@@ -329,4 +332,5 @@ fun BlockFontSettings(viewModel: MainViewModel,fractW: Float = 0.95f, fractH: Fl
         Spacer(Modifier.height(20.dp))
     }
 }
+
 //10 SettingsTypeFont.kt
