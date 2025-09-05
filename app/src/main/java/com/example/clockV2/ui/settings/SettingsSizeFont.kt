@@ -1,4 +1,4 @@
-// 9 SettingsSizeFont.kt
+// 10 SettingsSizeFont.kt
 package com.example.clockV2.ui.settings
 
 import androidx.compose.foundation.clickable
@@ -55,4 +55,4 @@ fun SettingsSizeFont(viewModel: MainViewModel,onClose: () -> Unit) {
 
     }
 }
-// 9 SettingsSizeFont.kt
+// 10 SettingsSizeFont.kt

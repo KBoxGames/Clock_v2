@@ -1,4 +1,4 @@
-// 12 MainActivity.kt
+// 13 MainActivity.kt
 package com.example.clockV2
 
 import android.os.Build
@@ -79,4 +79,4 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-// 12 MainActivity.kt
+// 13 MainActivity.kt

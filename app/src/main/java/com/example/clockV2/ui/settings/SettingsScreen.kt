@@ -1,4 +1,4 @@
-// 8 SettingsScreen.kt
+// 9 SettingsScreen.kt
 package com.example.clockV2.ui.settings
 
 import androidx.compose.foundation.BorderStroke
@@ -130,7 +130,7 @@ fun SettingsScreen(
                     containerColor = Color.DarkGray
                 ),
                 onClick = {
-                    onFontSizeClick
+                    onFontSizeClick()
                     viewModel.onEvent(ClockUiEvent.ToggleData)
                 }) {
 
@@ -152,4 +152,4 @@ fun SettingsScreen(
         }
     }
 }
-// 8 SettingsScreen.kt
+// 9 SettingsScreen.kt

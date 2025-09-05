@@ -1,4 +1,4 @@
-// 7 SettingsFonts.kt
+// 8 SettingsFonts.kt
 package com.example.clockV2.ui.settings
 
 import androidx.compose.foundation.BorderStroke
@@ -115,4 +115,4 @@ fun SettingsFonts(
 
     }
 }
-// 7 SettingsFonts.kt
+// 8 SettingsFonts.kt

@@ -1,4 +1,4 @@
-// 6 SettingsColorFont.kt
+// 7 SettingsColorFont.kt
 package com.example.clockV2.ui.settings
 
 import androidx.compose.foundation.background
@@ -110,4 +110,4 @@ fun SettingsColorFont(onClose:()->Unit, onSelectColor:(Color)->Unit) {
         }
     }
 }
-// 6 SettingsColorFont.kt
+// 7 SettingsColorFont.kt

@@ -1,3 +1,4 @@
+//4 CircularNumberPicker.kt
 package com.example.clockV2.ui.main.textUtilits
 
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -40,13 +41,13 @@ fun CircularNumberPicker(
     textSize: TextUnit = 60.sp,
     range: IntRange = (0..24),
     isDivider: Boolean = true,
-    isBourder: Boolean = true,
-    colorBourder: Color = Color.White,
+    isBorder: Boolean = true,
+    colorBorder: Color = Color.White,
     onValueSelected: (Int) -> Unit,
     initialValue: Int = 0
 ) {
     val numbers = range.toList()
-    val repeatedNumbers = remember { List(50) { numbers }.flatten() }
+    val repeatedNumbers = remember { List(5) { numbers }.flatten() }
     val startIndex = repeatedNumbers.size / 2 + initialValue
     var color: Color
 
@@ -78,7 +79,7 @@ fun CircularNumberPicker(
         onValueSelected(currentValue)
     }
 
-    if (isBourder) color = colorBourder else color = Color.Transparent
+    if (isBorder) color = colorBorder else color = Color.Transparent
     Box(  Modifier.size(pickerSize)
         .border(0.dp,color))
     {
@@ -134,3 +135,4 @@ fun CircularNumberPicker(
         }
     }
 }
+//4 CircularNumberPicker.kt

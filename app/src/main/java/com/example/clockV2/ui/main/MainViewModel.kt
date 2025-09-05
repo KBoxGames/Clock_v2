@@ -1,8 +1,9 @@
-// 5 MainViewModel.kt
+// 6 MainViewModel.kt
 package com.example.clockV2.ui.main
 
 import android.util.Log
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Paint
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -30,27 +31,30 @@ class MainViewModel : ViewModel() {
         fontFamily = led2,
         availableFont = availableFonts,
         isAutoChangeFont = false,
-        isMaxSizeText = false
-
+        isMaxSizeText = false,
+        intervalChangeFont = Pair(0,1)
     ))
 
     val uiState: StateFlow<ClockUiState> = _uiState.asStateFlow()
 
     private var fontChangeTimer: Job? = null
-    private val fontChangeInterval = 600000L // 10 секунд
+     var fontChangeInterval = 600000L // 10 секунд
 
     init {
         // Запускаем наблюдение за изменением состояния автосмены шрифта
         startFontChangeTimerObservation()
     }
 
-
-
     fun onEvent (event : ClockUiEvent){
         Log.d("MainViewModel", "Event: $event")
 
         when(event)
         {
+            is ClockUiEvent.SetIntervalChangeFont -> {
+                _uiState.update { it.copy( intervalChangeFont = event.newIntervalChangeFont) }
+                CalculateICF()
+            }
+
             is ClockUiEvent.FontSizeChange -> {
                 _uiState.update { it.copy(textSize = event.newTextSize) }
             }
@@ -151,7 +155,13 @@ class MainViewModel : ViewModel() {
             _uiState.update { it.copy(textSize = 280.sp) }
         }
     }
+    private fun CalculateICF()
+    {
+        val hour = _uiState.value.intervalChangeFont.first
+        var minute = _uiState.value.intervalChangeFont.second
 
+        fontChangeInterval = (((hour * 60) + minute)*60 * 1000).toLong()
+    }
 }
 
-// 5 MainViewModel.kt
+// 6 MainViewModel.kt

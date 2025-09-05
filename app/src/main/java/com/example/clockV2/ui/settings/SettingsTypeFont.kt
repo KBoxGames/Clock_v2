@@ -1,4 +1,4 @@
-//10 SettingsTypeFont.kt
+//11 SettingsTypeFont.kt
 package com.example.clockV2.ui.settings
 
 
@@ -242,14 +242,18 @@ fun BlockFont(fractW: Float = 0.4f, fractH: Float = 0.8f,
 fun BlockFontSettings(viewModel: MainViewModel,fractW: Float = 0.95f, fractH: Float = 0.8f)
 {
     val uiState = viewModel.uiState.collectAsState()
-    var selectedHours by remember { mutableStateOf(0) }
-    var selectedMinute by remember { mutableStateOf(0) }
+    var selectedHours = uiState.value.intervalChangeFont.first
+    var selectedMinute = uiState.value.intervalChangeFont.second
+
+
+
+
 
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         Spacer(Modifier.height(8.dp))
         Text("Настройки шрифта", fontSize = 30.sp)
         Spacer(Modifier.height(16.dp))
-        Card(
+         Card(
             modifier = Modifier
                 .fillMaxWidth(fractW)
                 .fillMaxHeight(fractH),
@@ -298,10 +302,12 @@ fun BlockFontSettings(viewModel: MainViewModel,fractW: Float = 0.95f, fractH: Fl
                             CircularNumberPicker(
                                 pickerSize = 60.dp,
                                 textSize = 35.sp,
-                                isBourder = false,
+                                isBorder = false,
                                 isDivider = false,
                                 onValueSelected = { value ->
-                                    selectedHours = value
+                                    viewModel.onEvent(
+                                        ClockUiEvent.SetIntervalChangeFont(
+                                            Pair(value,selectedMinute)))
                                 },
                                 initialValue = selectedHours
                             )
@@ -311,20 +317,23 @@ fun BlockFontSettings(viewModel: MainViewModel,fractW: Float = 0.95f, fractH: Fl
                                 textSize = 35.sp,
                                 range = (0..60),
                                 isDivider = false,
-                                isBourder = false,
+                                isBorder = false,
                                 onValueSelected = { value ->
-                                    selectedMinute = value
+                                    viewModel.onEvent(
+                                        ClockUiEvent.SetIntervalChangeFont(
+                                            Pair(selectedHours,value)))
+
                                 },
                                 initialValue = selectedMinute
                             )
+                            //Text("Часов: $selectedHours - минут: $selectedMinute - ${viewModel.fontChangeInterval }")
+
                             Spacer(Modifier.weight(1f))
                         }
 
                         Spacer(Modifier.weight(1f))
 
                     }
-                    Spacer(Modifier.height(8.dp))
-
 
                 }
             }
@@ -333,4 +342,4 @@ fun BlockFontSettings(viewModel: MainViewModel,fractW: Float = 0.95f, fractH: Fl
     }
 }
 
-//10 SettingsTypeFont.kt
+//11 SettingsTypeFont.kt

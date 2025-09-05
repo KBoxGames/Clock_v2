@@ -15,6 +15,7 @@ sealed interface ClockUiEvent {
     data class FontSizeChange (val newTextSize: TextUnit) : ClockUiEvent // Изменение размера шрифта
     data class FontColorChange (val newTextColor: Color) : ClockUiEvent //// Изменение цвета текста
     data class FontFamilyChange(val newFontFamily: FontFamily): ClockUiEvent  // Изменение шрифта
+    data class SetIntervalChangeFont (val newIntervalChangeFont: Pair<Int,Int>): ClockUiEvent  // Изменение интервала смены шрифта
 
 }
 

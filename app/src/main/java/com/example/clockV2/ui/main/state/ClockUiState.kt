@@ -16,7 +16,9 @@ data class ClockUiState(
     val fontFamily: FontFamily = FontFamily.SansSerif,
     val availableFont: List<Pair<FontFamily, String>> = emptyList(),
     val isAutoChangeFont: Boolean = false,
-    val isMaxSizeText: Boolean = false
+    val isMaxSizeText: Boolean = false,
+    val intervalChangeFont: Pair<Int,Int>
+
 )
 
 // 2 ClockUiState.kt
