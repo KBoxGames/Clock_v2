@@ -241,7 +241,7 @@ fun BlockFont(fractW: Float = 0.4f, fractH: Float = 0.8f,
 @Composable
 fun BlockFontSettings(viewModel: MainViewModel,fractW: Float = 0.95f, fractH: Float = 0.8f)
 {
-    var uiState = viewModel.uiState.collectAsState()
+    val uiState = viewModel.uiState.collectAsState()
     var selectedHours by remember { mutableStateOf(0) }
     var selectedMinute by remember { mutableStateOf(0) }
 

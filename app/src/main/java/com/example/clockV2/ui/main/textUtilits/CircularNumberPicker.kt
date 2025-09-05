@@ -31,6 +31,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import kotlin.math.abs
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -47,7 +48,7 @@ fun CircularNumberPicker(
     val numbers = range.toList()
     val repeatedNumbers = remember { List(50) { numbers }.flatten() }
     val startIndex = repeatedNumbers.size / 2 + initialValue
-    var color: Color = colorBourder
+    var color: Color
 
     val listState = rememberLazyListState(initialFirstVisibleItemIndex = startIndex)
     // val coroutineScope = rememberCoroutineScope()
@@ -66,7 +67,7 @@ fun CircularNumberPicker(
 
             layoutInfo.visibleItemsInfo
                 .minByOrNull { item: LazyListItemInfo ->
-                    kotlin.math.abs((item.offset + item.size / 2) - center)
+                    abs((item.offset + item.size / 2) - center)
                 }
                 ?.let { repeatedNumbers[it.index % numbers.size] } ?: initialValue
         }
@@ -112,7 +113,7 @@ fun CircularNumberPicker(
                             val itemInfo = layoutInfo.visibleItemsInfo.firstOrNull { it.index == index }
 
                             itemInfo?.let {
-                                kotlin.math.abs(it.offset + it.size / 2 - center) < it.size / 4
+                                abs(it.offset + it.size / 2 - center) < it.size / 4
                             } ?: false
                         }
                     }
