@@ -76,7 +76,7 @@ fun itemColor(color: Color, onSelectColor: (Color) -> Unit, onClose: () -> Unit)
         .clickable(onClick = {
             colorBox.value = Color.White
             onSelectColor(color)
-            onClose
+            onClose()
 
         })
     ){}

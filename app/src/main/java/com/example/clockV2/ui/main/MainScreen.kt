@@ -61,9 +61,15 @@ enum class SettingsScreenState {
 fun MainScreen(viewModel: MainViewModel) {
     val uiState by viewModel.uiState.collectAsState()
     var isShowButton by remember { mutableStateOf(false) } // Показать/скрыть кнопки
-    var timerJob by remember { mutableStateOf<Job?>(null) } // таймер автоскрытия кнопок
     var settingsScreenState by remember { mutableStateOf(SettingsScreenState.HIDDEN) }
 
+    LaunchedEffect(isShowButton) {
+        if (isShowButton) {
+            // Запускаем таймер только если кнопки видны
+            delay(6000)
+            isShowButton = false
+        }
+    }
 
     BoxWithConstraints(
         modifier = Modifier
@@ -74,11 +80,6 @@ fun MainScreen(viewModel: MainViewModel) {
                     settingsScreenState = SettingsScreenState.HIDDEN
                 } else {
                     isShowButton = true
-                    timerJob?.cancel()
-                    timerJob = CoroutineScope(Dispatchers.Main).launch {
-                        delay(6000)
-                        isShowButton = false
-                    }
                 }
             },
         contentAlignment = Alignment.Center
