@@ -1,4 +1,4 @@
-// 5 MainScreen.kt
+// 7 MainScreen.kt
 package com.example.clockV2.ui.main
 
 import android.annotation.SuppressLint
@@ -255,4 +255,4 @@ fun ButtonBlockLandscape(showSettings: () -> Unit) {
         }
     }
 }
-// 5 MainScreen.kt
+// 7 MainScreen.kt

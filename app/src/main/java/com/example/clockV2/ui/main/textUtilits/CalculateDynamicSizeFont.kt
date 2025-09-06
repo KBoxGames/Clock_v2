@@ -1,4 +1,4 @@
-// 3 CalculateDynamicSizeFont.kt
+// 5 CalculateDynamicSizeFont.kt
 package com.example.clockV2.ui.main.textUtilits
 
 import androidx.compose.foundation.layout.Box
@@ -134,4 +134,4 @@ private fun formatText(
         }
     }
 }
-// 3 CalculateDynamicSizeFont.kt
+// 5 CalculateDynamicSizeFont.kt

@@ -1,29 +1,35 @@
-// 6 MainViewModel.kt
+// 8 MainViewModel.kt
 package com.example.clockV2.ui.main
 
 import android.util.Log
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Paint
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.clockV2.data.TimeDateManager
 import com.example.clockV2.ui.main.state.ClockUiEvent
 import com.example.clockV2.ui.main.state.ClockUiState
 import com.example.clockV2.ui.theme.availableFonts
 import com.example.clockV2.ui.theme.led2
+import dagger.hilt.android.lifecycle.HiltViewModel
+import jakarta.inject.Inject
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import kotlin.random.Random
 
-class MainViewModel : ViewModel() {
+@HiltViewModel
+class MainViewModel @Inject constructor(
+    private val timeDateManager: TimeDateManager
+) : ViewModel(){
     private val _uiState = MutableStateFlow(ClockUiState(
-        textScreen = "07:30:00",
-        dataScreen = "12 августа 2025",
+        textScreen = "00:00:00",
+        dataScreen = " ",
         textSize = 500.sp,
         textColor = Color.White,
         isDate = true,
@@ -38,13 +44,45 @@ class MainViewModel : ViewModel() {
     val uiState: StateFlow<ClockUiState> = _uiState.asStateFlow()
 
     private var fontChangeTimer: Job? = null
+    private var timeUpdateJob: Job? = null
      var fontChangeInterval = 600000L // 10 секунд
 
     init {
         // Запускаем наблюдение за изменением состояния автосмены шрифта
         startFontChangeTimerObservation()
+
+        // Запускаем обновление времени
+        startTimeUpdates()
+        // Обновляем дату сразу
+        updateDate()
+    }
+    private fun startTimeUpdates() {
+        // Останавливаем предыдущую job, если она существует
+        timeUpdateJob?.cancel()
+
+        timeUpdateJob = viewModelScope.launch {
+            while (isActive) {
+                updateTime()
+                delay(1000) // Обновляем каждую секунду
+            }
+        }
     }
 
+    private fun updateTime() {
+        val timeFormat = if (_uiState.value.isSecond) "HH:mm:ss" else "HH:mm"
+        val currentTime = timeDateManager.getCurrentTime(timeFormat)
+
+        _uiState.update { it.copy(textScreen = currentTime) }
+    }
+
+    private fun updateDate() {
+        if (_uiState.value.isDate) {
+            val currentDate = timeDateManager.getCurrentDate()
+            _uiState.update { it.copy(dataScreen = currentDate) }
+        } else {
+            _uiState.update { it.copy(dataScreen = null) }
+        }
+    }
     fun onEvent (event : ClockUiEvent){
         Log.d("MainViewModel", "Event: $event")
 
@@ -70,10 +108,12 @@ class MainViewModel : ViewModel() {
             ClockUiEvent.ToggleData -> {
                 val newValue = !_uiState.value.isDate
                 _uiState.update { it.copy(isDate = newValue) }
+                updateDate()
             }
             ClockUiEvent.ToggleSecond -> {
                 val newValue = !_uiState.value.isSecond
                 _uiState.update { it.copy(isSecond = newValue) }
+                updateTime()
             }
 
             ClockUiEvent.ToggleMSF -> {
@@ -164,4 +204,4 @@ class MainViewModel : ViewModel() {
     }
 }
 
-// 6 MainViewModel.kt
+// 8 MainViewModel.kt

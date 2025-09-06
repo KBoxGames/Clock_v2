@@ -1,6 +1,7 @@
-// 13 MainActivity.kt
+// 14 MainActivity.kt
 package com.example.clockV2
 
+import android.app.Application
 import android.os.Build
 import android.os.Bundle
 import android.view.WindowInsets
@@ -12,14 +13,10 @@ import androidx.annotation.RequiresApi
 import androidx.compose.material3.Surface
 import androidx.core.view.WindowCompat
 import com.example.clockV2.ui.theme.ЧасыTheme
+import dagger.hilt.android.AndroidEntryPoint
+import dagger.hilt.android.HiltAndroidApp
 
-
-/*
-
-
-- реализовать FontFamily
- */
-
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     @RequiresApi(Build.VERSION_CODES.R)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -34,7 +31,6 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
-
     @RequiresApi(Build.VERSION_CODES.R)
     private fun enableFullScreenMode() {
 
@@ -79,4 +75,7 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-// 13 MainActivity.kt
+@HiltAndroidApp
+class ClockApplication : Application()
+
+// 14 MainActivity.kt

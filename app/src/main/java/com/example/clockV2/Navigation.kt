@@ -1,7 +1,8 @@
-// 14 Navigation.kt
+// 15 Navigation.kt
 package com.example.clockV2
 
 import androidx.compose.runtime.Composable
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -18,7 +19,7 @@ sealed class Screen(val route: String) {
 @Composable
 fun AppNavigation() {
     val navController = rememberNavController()
-    val viewModel: MainViewModel = viewModel ()
+    val viewModel: MainViewModel = hiltViewModel()
 
     NavHost(
         navController = navController,
@@ -35,4 +36,5 @@ fun AppNavigation() {
         }
     }
 }
-// 14 Navigation.kt
+
+// 15 Navigation.kt

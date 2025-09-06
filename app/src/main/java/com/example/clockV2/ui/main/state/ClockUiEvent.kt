@@ -1,4 +1,4 @@
-// 1 ClockUiEvent.kt
+// 3 ClockUiEvent.kt
 
 package com.example.clockV2.ui.main.state
 
@@ -19,4 +19,4 @@ sealed interface ClockUiEvent {
 
 }
 
-// 1 ClockUiEvent.kt
+// 3 ClockUiEvent.kt

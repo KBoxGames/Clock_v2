@@ -1,4 +1,4 @@
-// 2 ClockUiState.kt
+// 4 ClockUiState.kt
 package com.example.clockV2.ui.main.state
 
 import androidx.compose.ui.graphics.Color
@@ -21,4 +21,4 @@ data class ClockUiState(
 
 )
 
-// 2 ClockUiState.kt
+// 4 ClockUiState.kt

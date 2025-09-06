@@ -1,4 +1,4 @@
-//11 SettingsTypeFont.kt
+//13 SettingsTypeFont.kt
 package com.example.clockV2.ui.settings
 
 
@@ -342,4 +342,4 @@ fun BlockFontSettings(viewModel: MainViewModel,fractW: Float = 0.95f, fractH: Fl
     }
 }
 
-//11 SettingsTypeFont.kt
+//13 SettingsTypeFont.kt
