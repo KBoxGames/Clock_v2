@@ -45,11 +45,8 @@ import com.example.clockV2.ui.settings.SettingsFonts
 import com.example.clockV2.ui.settings.SettingsScreen
 import com.example.clockV2.ui.settings.SettingsSizeFont
 import com.example.clockV2.ui.settings.SettingsTypeFon
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
+
 
 // Перечисление для управления состоянием экранов
 enum class SettingsScreenState {

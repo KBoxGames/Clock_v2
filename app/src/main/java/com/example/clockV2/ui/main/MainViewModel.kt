@@ -198,7 +198,7 @@ class MainViewModel @Inject constructor(
     private fun CalculateICF()
     {
         val hour = _uiState.value.intervalChangeFont.first
-        var minute = _uiState.value.intervalChangeFont.second
+        val minute = _uiState.value.intervalChangeFont.second
 
         fontChangeInterval = (((hour * 60) + minute)*60 * 1000).toLong()
     }

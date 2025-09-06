@@ -242,8 +242,8 @@ fun BlockFont(fractW: Float = 0.4f, fractH: Float = 0.8f,
 fun BlockFontSettings(viewModel: MainViewModel,fractW: Float = 0.95f, fractH: Float = 0.8f)
 {
     val uiState = viewModel.uiState.collectAsState()
-    var selectedHours = uiState.value.intervalChangeFont.first
-    var selectedMinute = uiState.value.intervalChangeFont.second
+    val selectedHours = uiState.value.intervalChangeFont.first
+    val selectedMinute = uiState.value.intervalChangeFont.second
 
 
 
