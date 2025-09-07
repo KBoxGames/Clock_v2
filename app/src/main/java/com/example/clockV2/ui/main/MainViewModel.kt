@@ -210,7 +210,7 @@ class MainViewModel @Inject constructor(
         } else if (currentFonts.isNotEmpty()) {
             // Если есть только один шрифт, все равно меняем на него
             _uiState.update { it.copy(fontFamily = currentFonts[0]) }
-            //saveSettings()
+            saveSettings()
         }
     }
 
@@ -256,7 +256,7 @@ class MainViewModel @Inject constructor(
         if (_uiState.value.isMaxSizeText)
         {
             _uiState.update { it.copy(textSize = 280.sp) }
-            saveSettings()
+           // saveSettings()
         }
     }
     private fun CalculateICF()

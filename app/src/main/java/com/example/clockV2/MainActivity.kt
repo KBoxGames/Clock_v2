@@ -16,6 +16,16 @@ import com.example.clockV2.ui.theme.ЧасыTheme
 import dagger.hilt.android.AndroidEntryPoint
 import dagger.hilt.android.HiltAndroidApp
 
+
+/*
+- добавить в палитру цветов
+- сделать быструю прокрутку палитры цветов
+- добавить день недели
+- добавить окно информации
+- добавить иконки приложения
+- добавить погоду
+ */
+
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     @RequiresApi(Build.VERSION_CODES.R)

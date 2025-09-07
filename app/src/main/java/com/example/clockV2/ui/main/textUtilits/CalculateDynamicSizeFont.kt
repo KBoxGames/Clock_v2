@@ -61,7 +61,7 @@ fun DynamicText(
     // Обрабатываем переполнение
     LaunchedEffect(maxTextSize, timeOverflow, dateOverflow) {
         if (timeOverflow || dateOverflow) {
-            val newSize = currentSize * 0.7f
+            val newSize = currentSize * 0.95f
             if (newSize > 1.sp) {
                 currentSize = newSize
                 timeOverflow = false
