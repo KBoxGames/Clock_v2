@@ -17,7 +17,7 @@ class TimeDateManager @Inject constructor() {
         return sdf.format(Date())
     }
 
-    fun getCurrentDate(format: String = "dd MMMM yyyy"): String {
+    fun getCurrentDate(format: String = "EEE, dd MMMM yyyy"): String {
         val sdf = SimpleDateFormat(format, Locale.getDefault())
         return sdf.format(Date())
     }
