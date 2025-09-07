@@ -1,4 +1,3 @@
-//6 CircularNumberPicker.kt
 package com.example.clockV2.ui.main.textUtilits
 
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -16,6 +15,7 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.DividerDefaults
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -48,13 +48,27 @@ fun CircularNumberPicker(
 ) {
     val numbers = range.toList()
     val repeatedNumbers = remember { List(5) { numbers }.flatten() }
-    val startIndex = repeatedNumbers.size / 2 + initialValue
-    var color: Color
+
+    // Вычисляем начальный индекс на основе initialValue
+    val startIndex = remember(initialValue) {
+        val indexInNumbers = numbers.indexOf(initialValue)
+        if (indexInNumbers != -1) {
+            numbers.size * 2 + indexInNumbers
+        } else {
+            numbers.size * 2
+        }
+    }
 
     val listState = rememberLazyListState(initialFirstVisibleItemIndex = startIndex)
-    // val coroutineScope = rememberCoroutineScope()
 
-    // Используем правильный синтаксис для rememberSnapFlingBehavior
+    // Прокручиваем к нужному элементу при изменении initialValue
+    LaunchedEffect(initialValue) {
+        val targetIndex = numbers.indexOf(initialValue).let { index ->
+            if (index != -1) numbers.size * 2 + index else numbers.size * 2
+        }
+        listState.scrollToItem(targetIndex)
+    }
+
     val snapFlingBehavior = rememberSnapFlingBehavior(
         lazyListState = listState,
         snapPosition = SnapPosition.Center
@@ -79,38 +93,36 @@ fun CircularNumberPicker(
         onValueSelected(currentValue)
     }
 
-    if (isBorder) color = colorBorder else color = Color.Transparent
-    Box(  Modifier.size(pickerSize)
-        .border(0.dp,color))
-    {
+    val color = if (isBorder) colorBorder else Color.Transparent
+
+    Box(
+        modifier = Modifier
+            .size(pickerSize)
+            .border(0.dp, color)
+    ) {
         Box(
             contentAlignment = Alignment.Center,
-            modifier = Modifier
-                .fillMaxSize()
+            modifier = Modifier.fillMaxSize()
         ) {
             if (isDivider) {
-                // Линии для визуального выделения центра
                 HorizontalDivider(
                     modifier = Modifier.fillMaxWidth(),
                     thickness = DividerDefaults.Thickness,
                     color = Color.Gray
                 )
-
             }
 
             LazyColumn(
                 state = listState,
                 horizontalAlignment = Alignment.CenterHorizontally,
                 flingBehavior = snapFlingBehavior,
-                modifier = Modifier
-                    .fillMaxSize()
+                modifier = Modifier.fillMaxSize()
             ) {
                 itemsIndexed(repeatedNumbers) { index, number ->
                     val isCenter by remember {
                         derivedStateOf {
                             val layoutInfo = listState.layoutInfo
-                            val center =
-                                layoutInfo.viewportStartOffset + layoutInfo.viewportSize.height / 2
+                            val center = layoutInfo.viewportStartOffset + layoutInfo.viewportSize.height / 2
                             val itemInfo = layoutInfo.visibleItemsInfo.firstOrNull { it.index == index }
 
                             itemInfo?.let {
@@ -120,10 +132,9 @@ fun CircularNumberPicker(
                     }
 
                     Text(
-                        text = if (number < 10) "0${number.toString()}"
-                        else number.toString(),
+                        text = if (number < 10) "0${number}" else "$number",
                         fontSize = if (isCenter) textSize else textSize * 0.8f,
-                        color = if (isCenter) Color.White else Color.Gray,
+                        color = if (isCenter) MaterialTheme.colorScheme.primary else Color.Gray,
                         fontWeight = if (isCenter) FontWeight.Bold else FontWeight.Normal,
                         modifier = Modifier
                             .padding(8.dp)
@@ -135,4 +146,3 @@ fun CircularNumberPicker(
         }
     }
 }
-//6 CircularNumberPicker.kt

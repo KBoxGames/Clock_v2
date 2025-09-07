@@ -1,7 +1,9 @@
 // 15 Navigation.kt
 package com.example.clockV2
 
+import android.util.Log
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -18,6 +20,10 @@ sealed class Screen(val route: String) {
 fun AppNavigation() {
     val navController = rememberNavController()
     val viewModel: MainViewModel = hiltViewModel()
+
+    LaunchedEffect(Unit) {
+        Log.d("AppNavigation", "ViewModel created: $viewModel")
+    }
 
     NavHost(
         navController = navController,

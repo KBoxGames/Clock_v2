@@ -66,24 +66,30 @@ val colorFonts = listOf<Color>(
 
 
 @Composable
-fun itemColor(color: Color, onSelectColor: (Color) -> Unit, onClose: () -> Unit)
+fun ItemColor(color: Color,
+              currentColor: Color,
+              onSelectColor: (Color) -> Unit,
+              onClose: () -> Unit)
 {
     //Добавить выделение текущего цвета
-    val colorBox = remember { mutableStateOf(Color.Black) }
-    Box(modifier = Modifier.size(50.dp)
+    val isSelected = color == currentColor
+    val borderColor = if (isSelected) Color.White else Color.Black
+
+    Box(modifier = Modifier
+        .size(50.dp)
         .background(color)
-        .border(4.dp,color = colorBox.value)
-        .clickable(onClick = {
-            colorBox.value = Color.White
+        .border(4.dp, color = borderColor)
+        .clickable {
             onSelectColor(color)
             onClose()
-
-        })
+        }
     ){}
 }
 
 @Composable
-fun SettingsColorFont(onClose:()->Unit, onSelectColor:(Color)->Unit) {
+fun SettingsColorFont(onClose:()->Unit,
+                      onSelectColor:(Color)->Unit,
+                      currentColor: Color) {
     Box(
         modifier = Modifier.fillMaxSize().clickable(onClick = onClose),
         contentAlignment = Alignment.TopStart
@@ -99,8 +105,12 @@ fun SettingsColorFont(onClose:()->Unit, onSelectColor:(Color)->Unit) {
             )
             LazyRow(modifier = Modifier.weight(1f)) {
                 items(colorFonts) { color ->
-                    itemColor(color,onSelectColor,onClose)
-
+                    ItemColor(
+                        color = color,
+                        currentColor = currentColor, // Передаем текущий цвет
+                        onSelectColor = onSelectColor,
+                        onClose = onClose
+                    )
                 }
             }
             Icon(imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,

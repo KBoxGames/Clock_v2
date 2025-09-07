@@ -2,6 +2,7 @@
 package com.example.clockV2.ui.main
 
 import android.annotation.SuppressLint
+import android.util.Log
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
@@ -23,6 +24,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
@@ -67,119 +69,142 @@ fun MainScreen(viewModel: MainViewModel) {
             isShowButton = false
         }
     }
-
-    BoxWithConstraints(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(Color.Black)
-            .clickable {
-                if (settingsScreenState != SettingsScreenState.HIDDEN) {
-                    settingsScreenState = SettingsScreenState.HIDDEN
-                } else {
-                    isShowButton = true
-                }
-            },
-        contentAlignment = Alignment.Center
-    ) {
-        val isPortrait = maxHeight > maxWidth
-        val offset = if (isPortrait) 300f else 0f
-
-        // Отображение кнопок в зависимости от ориентации
-        if (!isPortrait) {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.End
-            ) {
-                if (isShowButton) {
-                    ButtonBlockLandscape {
-                        settingsScreenState = SettingsScreenState.MAIN
-                    }
-                }
-            }
-        } else {
-            Column(
-                modifier = Modifier.fillMaxSize(),
-                verticalArrangement = Arrangement.Bottom
-            ) {
-                if (isShowButton) {
-                    ButtonBlockPortrait {
-                        settingsScreenState = SettingsScreenState.MAIN
-                    }
-                }
-            }
-        }
-
-        ClockDisplay(uiState = uiState, offset)
-
-        // Анимированное отображение экранов настроек
-        AnimatedVisibility(
-            visible = settingsScreenState != SettingsScreenState.HIDDEN,
-            enter = fadeIn(animationSpec = tween(300)) +
-                    slideInVertically(
-                        initialOffsetY = { it },
-                        animationSpec = tween(durationMillis = 500)
-                    ),
-            exit = fadeOut(animationSpec = tween(300)) +
-                    slideOutVertically(
-                        targetOffsetY = { it },
-                        animationSpec = tween(durationMillis = 500)
-                    ),
-            modifier = Modifier.fillMaxSize()
+    if (uiState.isLoading) {
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(Color.Black),
+            contentAlignment = Alignment.Center
         ) {
-            Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .background(Color.Black.copy(alpha = 0.7f))
+            CircularProgressIndicator(color = Color.White)
+        }
+    } else {
+
+        BoxWithConstraints(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(Color.Black)
+                .clickable {
+                    if (settingsScreenState != SettingsScreenState.HIDDEN) {
+                        settingsScreenState = SettingsScreenState.HIDDEN
+                    } else {
+                        isShowButton = true
+                    }
+                },
+            contentAlignment = Alignment.Center
+        ) {
+            val isPortrait = maxHeight > maxWidth
+            val offset = if (isPortrait) 300f else 0f
+
+            // Отображение кнопок в зависимости от ориентации
+            if (!isPortrait) {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.End
+                ) {
+                    if (isShowButton) {
+                        ButtonBlockLandscape {
+                            settingsScreenState = SettingsScreenState.MAIN
+                        }
+                    }
+                }
+            } else {
+                Column(
+                    modifier = Modifier.fillMaxSize(),
+                    verticalArrangement = Arrangement.Bottom
+                ) {
+                    if (isShowButton) {
+                        ButtonBlockPortrait {
+                            settingsScreenState = SettingsScreenState.MAIN
+                        }
+                    }
+                }
+            }
+
+            ClockDisplay(uiState = uiState, offset)
+
+            // Анимированное отображение экранов настроек
+            AnimatedVisibility(
+                visible = settingsScreenState != SettingsScreenState.HIDDEN,
+                enter = fadeIn(animationSpec = tween(300)) +
+                        slideInVertically(
+                            initialOffsetY = { it },
+                            animationSpec = tween(durationMillis = 500)
+                        ),
+                exit = fadeOut(animationSpec = tween(300)) +
+                        slideOutVertically(
+                            targetOffsetY = { it },
+                            animationSpec = tween(durationMillis = 500)
+                        ),
+                modifier = Modifier.fillMaxSize()
             ) {
-                when (settingsScreenState) {
-                    SettingsScreenState.MAIN -> {
-                        SettingsScreen(
-                            viewModel,
-                            onClose = { settingsScreenState = SettingsScreenState.HIDDEN },
-                            onFontsClick = { settingsScreenState = SettingsScreenState.FONTS },
-                            onFontSizeClick = { settingsScreenState = SettingsScreenState.FONT_SIZE }
-                        )
-                    }
-                    SettingsScreenState.FONTS -> {
-                        SettingsFonts(
-                            onClose = { settingsScreenState = SettingsScreenState.MAIN },
-                            onFontSizeClick = { settingsScreenState = SettingsScreenState.FONT_SIZE },
-                            onFontColorClick =  {settingsScreenState = SettingsScreenState.FONT_COLOR},
-                            onFontTypeClick = {settingsScreenState = SettingsScreenState.FONT_TYPE}
-                        )
-                    }
-                    SettingsScreenState.FONT_SIZE -> {
-                        SettingsSizeFont(
-                            onClose = {  settingsScreenState = SettingsScreenState.MAIN },
-                            viewModel = viewModel
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(Color.Black.copy(alpha = 0.7f))
+                ) {
+                    when (settingsScreenState) {
+                        SettingsScreenState.MAIN -> {
+                            SettingsScreen(
+                                viewModel,
+                                onClose = { settingsScreenState = SettingsScreenState.HIDDEN },
+                                onFontsClick = { settingsScreenState = SettingsScreenState.FONTS },
+                                onFontSizeClick = {
+                                    settingsScreenState = SettingsScreenState.FONT_SIZE
+                                }
                             )
-                    }
-                    SettingsScreenState.FONT_COLOR -> {
-                        SettingsColorFont(
-                            onClose = { settingsScreenState = SettingsScreenState.MAIN },
-                            onSelectColor ={color ->
-                                viewModel.onEvent(ClockUiEvent.FontColorChange(color))
-                            }
-                        )
-                    }
+                        }
 
-                    SettingsScreenState.FONT_TYPE -> {
-                        SettingsTypeFon(
-                            onClose = { settingsScreenState = SettingsScreenState.MAIN },
-                            onSelectFontType = { font ->
-                                viewModel.onEvent(ClockUiEvent.FontFamilyChange(font))
-                            },
-                            currentFont = uiState.fontFamily,
-                            viewModel =viewModel
-                        )
+                        SettingsScreenState.FONTS -> {
+                            SettingsFonts(
+                                onClose = { settingsScreenState = SettingsScreenState.MAIN },
+                                onFontSizeClick = {
+                                    settingsScreenState = SettingsScreenState.FONT_SIZE
+                                },
+                                onFontColorClick = {
+                                    settingsScreenState = SettingsScreenState.FONT_COLOR
+                                },
+                                onFontTypeClick = {
+                                    settingsScreenState = SettingsScreenState.FONT_TYPE
+                                }
+                            )
+                        }
+
+                        SettingsScreenState.FONT_SIZE -> {
+                            SettingsSizeFont(
+                                onClose = { settingsScreenState = SettingsScreenState.MAIN },
+                                viewModel = viewModel
+                            )
+                        }
+
+                        SettingsScreenState.FONT_COLOR -> {
+                            SettingsColorFont(
+                                onClose = { settingsScreenState = SettingsScreenState.MAIN },
+                                onSelectColor = { color ->
+                                    viewModel.onEvent(ClockUiEvent.FontColorChange(color))
+                                },
+                                currentColor = uiState.textColor
+                            )
+                        }
+
+                        SettingsScreenState.FONT_TYPE -> {
+                            SettingsTypeFon(
+                                onClose = { settingsScreenState = SettingsScreenState.MAIN },
+                                onSelectFontType = { font ->
+                                    viewModel.onEvent(ClockUiEvent.FontFamilyChange(font))
+                                },
+                                currentFont = uiState.fontFamily,
+                                viewModel = viewModel
+                            )
+                        }
+
+                        SettingsScreenState.HIDDEN -> {
+                            // Пустой Box, когда экран скрыт
+                            Box(modifier = Modifier.fillMaxSize())
+                        }
+
+
                     }
-
-                    SettingsScreenState.HIDDEN -> {
-                        // Пустой Box, когда экран скрыт
-                        Box(modifier = Modifier.fillMaxSize())
-                    }
-
-
                 }
             }
         }
@@ -188,6 +213,9 @@ fun MainScreen(viewModel: MainViewModel) {
 
 @Composable
 fun ClockDisplay(uiState: ClockUiState, offset: Float) {
+
+    Log.d("ClockDisplay", "Text: ${uiState.textScreen}, Color: ${uiState.textColor}, Size: ${uiState.textSize}")
+
     DynamicText(
 
         textTime = uiState.textScreen,

@@ -59,17 +59,17 @@ fun DynamicText(
     }
 
     // Обрабатываем переполнение
-    LaunchedEffect(timeOverflow, dateOverflow) {
+    LaunchedEffect(maxTextSize, timeOverflow, dateOverflow) {
         if (timeOverflow || dateOverflow) {
-            val newSize = currentSize * 0.9f
+            val newSize = currentSize * 0.7f
             if (newSize > 1.sp) {
                 currentSize = newSize
-                // Сбрасываем флаги после изменения размера
                 timeOverflow = false
                 dateOverflow = false
             }
+        } else {
+            currentSize = maxTextSize
         }
-
     }
     // Форматирование текста с разным размером для часов/минут и секунд
     val formattedText = remember(textTime, currentSize) {

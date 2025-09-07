@@ -246,9 +246,6 @@ fun BlockFontSettings(viewModel: MainViewModel,fractW: Float = 0.95f, fractH: Fl
     val selectedMinute = uiState.value.intervalChangeFont.second
 
 
-
-
-
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         Spacer(Modifier.height(8.dp))
         Text("Настройки шрифта", fontSize = 30.sp)
@@ -315,7 +312,7 @@ fun BlockFontSettings(viewModel: MainViewModel,fractW: Float = 0.95f, fractH: Fl
                             CircularNumberPicker(
                                 pickerSize = 60.dp,
                                 textSize = 35.sp,
-                                range = (0..60),
+                                range = (1..60),
                                 isDivider = false,
                                 isBorder = false,
                                 onValueSelected = { value ->
