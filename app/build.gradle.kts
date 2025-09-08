@@ -11,7 +11,7 @@ android {
     compileSdk = 36
 
     defaultConfig {
-        applicationId = "com.example.ClockV2"
+        applicationId = "com.clock"
         minSdk = 24
         targetSdk = 36
         versionCode = 4
