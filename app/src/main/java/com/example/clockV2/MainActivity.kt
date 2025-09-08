@@ -21,7 +21,7 @@ import dagger.hilt.android.HiltAndroidApp
 - исправить глюк с автомаштабированием шрифта
 - добавить в палитру цветов
 - сделать быструю прокрутку палитры цветов
-- добавить окно информации
+
 - добавить погоду
  */
 
@@ -32,6 +32,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         setContent {
+            window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
             enableFullScreenMode()
             ЧасыTheme {
                 Surface {

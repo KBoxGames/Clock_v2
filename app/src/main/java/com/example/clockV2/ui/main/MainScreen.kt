@@ -52,7 +52,7 @@ import kotlinx.coroutines.delay
 
 // Перечисление для управления состоянием экранов
 enum class SettingsScreenState {
-    HIDDEN, MAIN, FONTS, FONT_SIZE, FONT_COLOR, FONT_TYPE
+    HIDDEN, MAIN, FONTS, FONT_SIZE, FONT_COLOR, FONT_TYPE, INFO_PROG
 }
 
 @SuppressLint("UnusedBoxWithConstraintsScope", "CoroutineCreationDuringComposition")
@@ -103,9 +103,10 @@ fun MainScreen(viewModel: MainViewModel) {
                     horizontalArrangement = Arrangement.End
                 ) {
                     if (isShowButton) {
-                        ButtonBlockLandscape {
-                            settingsScreenState = SettingsScreenState.MAIN
-                        }
+                        ButtonBlockLandscape(
+                            showSettings = {settingsScreenState = SettingsScreenState.MAIN},
+                            showInfo = { settingsScreenState = SettingsScreenState.INFO_PROG }
+                        )
                     }
                 }
             } else {
@@ -114,9 +115,10 @@ fun MainScreen(viewModel: MainViewModel) {
                     verticalArrangement = Arrangement.Bottom
                 ) {
                     if (isShowButton) {
-                        ButtonBlockPortrait {
-                            settingsScreenState = SettingsScreenState.MAIN
-                        }
+                        ButtonBlockPortrait(
+                            showSettings = {settingsScreenState = SettingsScreenState.MAIN},
+                            showInfo = { settingsScreenState = SettingsScreenState.INFO_PROG }
+                        )
                     }
                 }
             }
@@ -198,6 +200,13 @@ fun MainScreen(viewModel: MainViewModel) {
                             )
                         }
 
+                        SettingsScreenState.INFO_PROG -> {
+                            infoScreen(
+                                onClose = { settingsScreenState = SettingsScreenState.MAIN },
+
+                            )
+                        }
+
                         SettingsScreenState.HIDDEN -> {
                             // Пустой Box, когда экран скрыт
                             Box(modifier = Modifier.fillMaxSize())
@@ -232,9 +241,11 @@ fun ClockDisplay(uiState: ClockUiState, offset: Float) {
 }
 
 @Composable
-fun ButtonBlockPortrait(showSettings: () -> Unit) {
-    Row(modifier = Modifier.fillMaxWidth().padding(30.dp)) {
-        IconButton(onClick = {}) {
+fun ButtonBlockPortrait(showSettings: () -> Unit, showInfo: ()-> Unit) {
+    Row(modifier = Modifier
+        .fillMaxWidth()
+        .padding(30.dp)) {
+        IconButton(onClick = showInfo) {
             Icon(
                 imageVector = Icons.Default.Info,
                 contentDescription = "Помощь",
@@ -257,9 +268,9 @@ fun ButtonBlockPortrait(showSettings: () -> Unit) {
 }
 
 @Composable
-fun ButtonBlockLandscape(showSettings: () -> Unit) {
+fun ButtonBlockLandscape(showSettings: () -> Unit, showInfo: () -> Unit) {
     Column(modifier = Modifier.padding(30.dp)) {
-        IconButton(onClick = {}) {
+        IconButton(onClick = showInfo) {
             Icon(
                 imageVector = Icons.Default.Info,
                 contentDescription = "Помощь",
