@@ -129,10 +129,7 @@ fun SettingsScreen(
                     disabledContentColor = Color.Transparent,
                     containerColor = Color.DarkGray
                 ),
-                onClick = {
-                    onFontSizeClick()
-                    viewModel.onEvent(ClockUiEvent.ToggleData)
-                }) {
+                onClick = { viewModel.onEvent(ClockUiEvent.ToggleData) }) {
 
                 Row(modifier = Modifier.fillMaxWidth(),
                     Arrangement.Center,
