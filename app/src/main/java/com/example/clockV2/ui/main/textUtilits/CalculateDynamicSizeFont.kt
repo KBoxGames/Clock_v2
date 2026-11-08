@@ -49,7 +49,7 @@ fun DynamicText(
 
 
     // Новый текст или изменение режима отображения начинают подбор размера заново.
-    LaunchedEffect(maxTextSize, textTime, textDate, isShowDate) {
+    LaunchedEffect(maxTextSize, textTime.length, textDate, isShowDate) {
         currentSize = maxTextSize
         timeOverflow = false
         dateOverflow = false
