@@ -11,6 +11,7 @@ data class ClockUiState(
     val dataScreen: String? = null,
     val isSecond: Boolean = true,
     val isDate: Boolean = false,
+    val isEcoMode: Boolean = false,
     val textSize: TextUnit = 150.sp,
     val textColor: Color = Color.Green,
     val fontFamily: FontFamily = FontFamily.SansSerif,
