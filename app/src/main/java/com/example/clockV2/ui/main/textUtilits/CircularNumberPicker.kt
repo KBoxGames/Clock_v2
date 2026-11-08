@@ -47,7 +47,7 @@ fun CircularNumberPicker(
     initialValue: Int = 0
 ) {
     val numbers = range.toList()
-    val repeatedNumbers = remember { List(5) { numbers }.flatten() }
+    val repeatedNumbers = remember(numbers) { List(5) { numbers }.flatten() }
 
     // Вычисляем начальный индекс на основе initialValue
     val startIndex = remember(initialValue) {

@@ -18,6 +18,7 @@ import com.example.clockV2.ui.theme.led3
 import com.example.clockV2.ui.theme.led4
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -25,7 +26,7 @@ import javax.inject.Singleton
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
 
 @Singleton
-class SettingsRepository @Inject constructor(private val context: Context) {
+class SettingsRepository @Inject constructor(@ApplicationContext private val context: Context) {
 
     // Ключи для хранения настроек
     companion object {

@@ -37,8 +37,7 @@ import com.example.clockV2.ui.theme.BorderColor
 fun SettingsScreen(
     viewModel: MainViewModel,
     onClose : () -> Unit,
-    onFontsClick : () -> Unit,
-    onFontSizeClick : () -> Unit
+    onFontsClick : () -> Unit
 ) {
 
     val uiState by viewModel.uiState.collectAsState()
@@ -129,10 +128,7 @@ fun SettingsScreen(
                     disabledContentColor = Color.Transparent,
                     containerColor = Color.DarkGray
                 ),
-                onClick = {
-                    onFontSizeClick()
-                    viewModel.onEvent(ClockUiEvent.ToggleData)
-                }) {
+                onClick = { viewModel.onEvent(ClockUiEvent.ToggleData) }) {
 
                 Row(modifier = Modifier.fillMaxWidth(),
                     Arrangement.Center,
