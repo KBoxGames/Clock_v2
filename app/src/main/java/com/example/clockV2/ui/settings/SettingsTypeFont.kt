@@ -61,8 +61,7 @@ fun SettingsTypeFon(viewModel: MainViewModel,
     BoxWithConstraints(modifier = Modifier.fillMaxSize().clickable(onClick = onClose),
         contentAlignment = Alignment.BottomEnd) {
 
-        var isPortrait by remember { mutableStateOf(false) }
-        if (maxHeight < maxWidth) isPortrait = true
+        val isPortrait = maxHeight > maxWidth
 
         if (isPortrait) {
             Card(modifier = Modifier.fillMaxWidth(0.85f))
@@ -312,7 +311,7 @@ fun BlockFontSettings(viewModel: MainViewModel,fractW: Float = 0.95f, fractH: Fl
                             CircularNumberPicker(
                                 pickerSize = 60.dp,
                                 textSize = 35.sp,
-                                range = (1..60),
+                                range = (0..59),
                                 isDivider = false,
                                 isBorder = false,
                                 onValueSelected = { value ->
