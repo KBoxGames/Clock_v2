@@ -105,7 +105,7 @@ class MainViewModel @Inject constructor(
         viewModelScope.launch {
             settingsRepository.settingsFlow.collect { settings ->
                 applySettings(settings)
-                if (uiState.value.isAutoChangeFont) {
+                if (uiState.value.isAutoChangeFont && !uiState.value.isEcoMode) {
                     startFontChangeTimer()
                 } else {
                     stopFontChangeTimer()
@@ -186,6 +186,7 @@ class MainViewModel @Inject constructor(
                 val newValue = !_uiState.value.isSecond
                 _uiState.update { it.copy(isSecond = newValue) }
                 updateTime()
+                startTimeUpdates()
                 saveSettings()
             }
 
@@ -193,6 +194,7 @@ class MainViewModel @Inject constructor(
                 val newValue = !_uiState.value.isEcoMode
                 _uiState.update { it.copy(isEcoMode = newValue) }
                 updateTime()
+                startTimeUpdates()
                 if (newValue) {
                     stopFontChangeTimer()
                 } else if (_uiState.value.isAutoChangeFont) {
@@ -212,7 +214,7 @@ class MainViewModel @Inject constructor(
                 val newValue = !_uiState.value.isAutoChangeFont
                 _uiState.update { it.copy(isAutoChangeFont = newValue) }
                 // Останавливаем или запускаем таймер при изменении состояния
-                if (newValue) {
+                if (newValue && !_uiState.value.isEcoMode) {
                     startFontChangeTimer()
                 } else {
                     stopFontChangeTimer()
