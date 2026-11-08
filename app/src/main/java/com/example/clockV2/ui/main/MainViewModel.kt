@@ -137,7 +137,7 @@ class MainViewModel @Inject constructor(
         }
     }
     private fun updateTime() {
-        val timeFormat = if (_uiState.value.isSecond) "HH:mm:ss" else "HH:mm"
+        val timeFormat = if (_uiState.value.isSecond && !_uiState.value.isEcoMode) "HH:mm:ss" else "HH:mm"
         val currentTime = timeDateManager.getCurrentTime(timeFormat)
 
         _uiState.update { it.copy(textScreen = currentTime) }
