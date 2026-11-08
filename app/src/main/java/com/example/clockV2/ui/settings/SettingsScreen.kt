@@ -53,7 +53,7 @@ fun SettingsScreen(
         if (isPortrait)
         {
             fractionW = 1f
-            fractionH = 0.35f
+            fractionH = 0.46f
         } else
         {
             fractionW = 0.5f
@@ -115,6 +115,36 @@ fun SettingsScreen(
 
                 }
 
+            }
+            Spacer(Modifier.height(8.dp))
+            Button(
+                modifier = Modifier
+                    .weight(1f)
+                    .fillMaxWidth(),
+                border = BorderStroke(2.dp, color = BorderColor),
+                colors = ButtonColors(
+                    contentColor = Color.White,
+                    disabledContainerColor = Color.Transparent,
+                    disabledContentColor = Color.Transparent,
+                    containerColor = Color.DarkGray
+                ),
+                onClick = { viewModel.onEvent(ClockUiEvent.ToggleEcoMode) }) {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.Center,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Checkbox(
+                        checked = uiState.isEcoMode,
+                        onCheckedChange = { viewModel.onEvent(ClockUiEvent.ToggleEcoMode) }
+                    )
+                    Box(
+                        modifier = Modifier.fillMaxWidth(),
+                        contentAlignment = Alignment.CenterEnd
+                    ) {
+                        Text("Режим ЭКО (яркость ниже, без секунд)", fontSize = 18.sp)
+                    }
+                }
             }
             Spacer(Modifier.height(8.dp))
             Button(
