@@ -48,27 +48,21 @@ fun DynamicText(
     var dateOverflow by remember { mutableStateOf(false) }  // Переполнение Даты
 
 
-    // Сбрасываем переполнение даты при скрытии
-
-    LaunchedEffect(maxTextSize) {
+    // Новый текст или изменение режима отображения начинают подбор размера заново.
+    LaunchedEffect(maxTextSize, textTime, textDate, isShowDate) {
         currentSize = maxTextSize
+        timeOverflow = false
+        dateOverflow = false
     }
 
-    LaunchedEffect(isShowDate) {
-        if (!isShowDate) dateOverflow = false
-    }
-
-    // Обрабатываем переполнение
+    // Уменьшаем размер только при реальном переполнении.
+    // Не возвращаем его к maxTextSize после каждого измерения без переполнения:
+    // иначе состояние зацикливается между исходным и уменьшенным размером.
     LaunchedEffect(maxTextSize, timeOverflow, dateOverflow) {
-        if (timeOverflow || dateOverflow) {
-            val newSize = currentSize * 0.95f
-            if (newSize > 1.sp) {
-                currentSize = newSize
-                timeOverflow = false
-                dateOverflow = false
-            }
-        } else {
-            currentSize = maxTextSize
+        if ((timeOverflow || dateOverflow) && currentSize > 1.sp) {
+            currentSize = (currentSize.value * 0.95f).sp
+            timeOverflow = false
+            dateOverflow = false
         }
     }
     // Форматирование текста с разным размером для часов/минут и секунд
