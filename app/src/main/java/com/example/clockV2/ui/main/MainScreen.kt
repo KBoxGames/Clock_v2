@@ -150,10 +150,7 @@ fun MainScreen(viewModel: MainViewModel) {
                             SettingsScreen(
                                 viewModel,
                                 onClose = { settingsScreenState = SettingsScreenState.HIDDEN },
-                                onFontsClick = { settingsScreenState = SettingsScreenState.FONTS },
-                                onFontSizeClick = {
-                                    settingsScreenState = SettingsScreenState.FONT_SIZE
-                                }
+                                onFontsClick = { settingsScreenState = SettingsScreenState.FONTS }
                             )
                         }
 
