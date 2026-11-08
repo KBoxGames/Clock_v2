@@ -116,9 +116,14 @@ class MainViewModel @Inject constructor(
         timeUpdateJob?.cancel()
 
         timeUpdateJob = viewModelScope.launch {
+            var secondsUntilDateRefresh = 0
             while (isActive) {
                 updateTime()
-                delay(1000) // Обновляем каждую секунду
+                if (++secondsUntilDateRefresh >= 60) {
+                    updateDate()
+                    secondsUntilDateRefresh = 0
+                }
+                delay(1000) // Обновляем время каждую секунду, дату — раз в минуту
             }
         }
     }
