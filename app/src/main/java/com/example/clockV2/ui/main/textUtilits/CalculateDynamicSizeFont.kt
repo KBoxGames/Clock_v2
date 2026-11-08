@@ -53,25 +53,20 @@ fun DynamicText(
         val availableWidth = maxWidth
         val availableHeight = maxHeight
 
-        var currentSize by remember(maxTextSize) { mutableStateOf(maxTextSize) }
-        var timeOverflow by remember { mutableStateOf(false) }
-        var dateOverflow by remember { mutableStateOf(false) }
-
-        LaunchedEffect(
-            maxTextSize,
-            availableWidth,
-            availableHeight,
-            textTime.length,
-            textDate,
-            isShowDate
-        ) {
-            currentSize = maxTextSize
-            timeOverflow = false
-            dateOverflow = false
-        }
+        // Состояние размера привязано к геометрии доступной области.
+        // При повороте экрана Compose сразу создаёт состояние для новых размеров,
+        // не ожидая следующего обновления времени или другого события.
+        var currentSize by remember(
+            maxTextSize, availableWidth, availableHeight, textTime.length, textDate, isShowDate
+        ) { mutableStateOf(maxTextSize) }
+        var timeOverflow by remember(
+            availableWidth, availableHeight, textTime.length, textDate, isShowDate
+        ) { mutableStateOf(false) }
+        var dateOverflow by remember(
+            availableWidth, availableHeight, textTime.length, textDate, isShowDate
+        ) { mutableStateOf(false) }
 
         // Уменьшаем размер только при реальном переполнении.
-        // После изменения размеров экрана подбор начинается с исходного размера.
         LaunchedEffect(maxTextSize, availableWidth, availableHeight, timeOverflow, dateOverflow) {
             if ((timeOverflow || dateOverflow) && currentSize > 1.sp) {
                 currentSize = (currentSize.value * 0.95f).sp
