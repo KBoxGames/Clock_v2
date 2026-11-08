@@ -14,7 +14,7 @@ import com.example.clockV2.ui.main.state.ClockUiState
 import com.example.clockV2.ui.theme.availableFonts
 import com.example.clockV2.ui.theme.led2
 import dagger.hilt.android.lifecycle.HiltViewModel
-import jakarta.inject.Inject
+import javax.inject.Inject
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
