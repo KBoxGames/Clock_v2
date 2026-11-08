@@ -5,6 +5,7 @@ on:
     branches:
       - master
       - audit/fix-build-and-runtime
+      - feature/eco-mode-wall-clock
   pull_request:
     branches:
       - master
