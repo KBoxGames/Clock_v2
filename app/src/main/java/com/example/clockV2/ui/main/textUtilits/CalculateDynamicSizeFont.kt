@@ -2,6 +2,7 @@
 package com.example.clockV2.ui.main.textUtilits
 
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -43,37 +44,47 @@ fun DynamicText(
     isShowDate: Boolean,
     offset : Float = 0f
 ) {
-    var currentSize by remember(maxTextSize) { mutableStateOf(maxTextSize) }
-    var timeOverflow by remember { mutableStateOf(false) }  // Переполнение времени (выходит за рамки экрана)
-    var dateOverflow by remember { mutableStateOf(false) }  // Переполнение Даты
+    BoxWithConstraints(
+        modifier = Modifier.fillMaxWidth(0.95f),
+        contentAlignment = Alignment.Center
+    ) {
+        // Размер доступной области входит в ключи пересчёта:
+        // при повороте устройства шрифт подбирается заново и может увеличиться.
+        val availableWidth = maxWidth
+        val availableHeight = maxHeight
 
+        var currentSize by remember(maxTextSize) { mutableStateOf(maxTextSize) }
+        var timeOverflow by remember { mutableStateOf(false) }
+        var dateOverflow by remember { mutableStateOf(false) }
 
-    // Новый текст или изменение режима отображения начинают подбор размера заново.
-    LaunchedEffect(maxTextSize, textTime.length, textDate, isShowDate) {
-        currentSize = maxTextSize
-        timeOverflow = false
-        dateOverflow = false
-    }
-
-    // Уменьшаем размер только при реальном переполнении.
-    // Не возвращаем его к maxTextSize после каждого измерения без переполнения:
-    // иначе состояние зацикливается между исходным и уменьшенным размером.
-    LaunchedEffect(maxTextSize, timeOverflow, dateOverflow) {
-        if ((timeOverflow || dateOverflow) && currentSize > 1.sp) {
-            currentSize = (currentSize.value * 0.95f).sp
+        LaunchedEffect(
+            maxTextSize,
+            availableWidth,
+            availableHeight,
+            textTime.length,
+            textDate,
+            isShowDate
+        ) {
+            currentSize = maxTextSize
             timeOverflow = false
             dateOverflow = false
         }
-    }
-    // Форматирование текста с разным размером для часов/минут и секунд
-    val formattedText = remember(textTime, currentSize) {
-        formatText(textTime, currentSize, 0.3f)
-    }
 
-    Box(modifier = Modifier.fillMaxWidth(0.95f), contentAlignment = Alignment.Center) {
+        // Уменьшаем размер только при реальном переполнении.
+        // После изменения размеров экрана подбор начинается с исходного размера.
+        LaunchedEffect(maxTextSize, availableWidth, availableHeight, timeOverflow, dateOverflow) {
+            if ((timeOverflow || dateOverflow) && currentSize > 1.sp) {
+                currentSize = (currentSize.value * 0.95f).sp
+                timeOverflow = false
+                dateOverflow = false
+            }
+        }
 
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally) {
+        val formattedText = remember(textTime, currentSize) {
+            formatText(textTime, currentSize, 0.3f)
+        }
+
+        Column(horizontalAlignment = Alignment.CenterHorizontally) {
             Text(
                 text = formattedText,
                 color = colorText,
@@ -82,10 +93,10 @@ fun DynamicText(
                 textAlign = TextAlign.Center,
                 softWrap = false,
                 onTextLayout = { textLayoutResult ->
-                    timeOverflow = textLayoutResult.didOverflowWidth || textLayoutResult.didOverflowHeight  // Проверка на переполнение по ширине и высоте
+                    timeOverflow =
+                        textLayoutResult.didOverflowWidth || textLayoutResult.didOverflowHeight
                 }
             )
-
 
             if (isShowDate && textDate != null) {
                 Text(
@@ -94,14 +105,15 @@ fun DynamicText(
                     style = style.copy(fontFamily = FontFamily.SansSerif),
                     textAlign = TextAlign.Center,
                     softWrap = false,
-                    fontSize = currentSize * 0.15f, // Размер шрифта даты меньше основного
+                    fontSize = currentSize * 0.15f,
                     onTextLayout = { textLayoutResult ->
-                        dateOverflow = textLayoutResult.didOverflowWidth || textLayoutResult.didOverflowHeight
+                        dateOverflow =
+                            textLayoutResult.didOverflowWidth || textLayoutResult.didOverflowHeight
                     }
                 )
             }
 
-            Spacer(Modifier.height(offset.dp)) // Отступ для адаптации под ориентацию
+            Spacer(Modifier.height(offset.dp))
         }
     }
 }
