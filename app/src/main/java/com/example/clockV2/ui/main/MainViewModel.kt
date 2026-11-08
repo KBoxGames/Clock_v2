@@ -41,6 +41,7 @@ class MainViewModel @Inject constructor(
             textColor = Color.White,
             isDate = true,
             isSecond = true,
+            isEcoMode = false,
             fontFamily = led2,
             availableFont = availableFonts,
             isAutoChangeFont = false,
@@ -86,6 +87,7 @@ class MainViewModel @Inject constructor(
         _uiState.update {
             it.copy(
                 isSecond = settings.isSecond,
+                isEcoMode = settings.isEcoMode,
                 isDate = settings.isDate,
                 textSize = settings.textSize,
                 textColor = settings.textColor,
@@ -96,6 +98,7 @@ class MainViewModel @Inject constructor(
             )
         }
         CalculateICF()
+        updateTime()
     }
 
     private fun startSettingsObservation() {
@@ -116,14 +119,20 @@ class MainViewModel @Inject constructor(
         timeUpdateJob?.cancel()
 
         timeUpdateJob = viewModelScope.launch {
-            var secondsUntilDateRefresh = 0
+            var lastDateMinute = System.currentTimeMillis() / 60_000L
             while (isActive) {
                 updateTime()
-                if (++secondsUntilDateRefresh >= 60) {
+                val showSeconds = _uiState.value.isSecond && !_uiState.value.isEcoMode
+                val interval = if (showSeconds) 1_000L else 60_000L
+                val now = System.currentTimeMillis()
+                val currentDateMinute = now / 60_000L
+                if (currentDateMinute != lastDateMinute) {
                     updateDate()
-                    secondsUntilDateRefresh = 0
+                    lastDateMinute = currentDateMinute
                 }
-                delay(1000) // Обновляем время каждую секунду, дату — раз в минуту
+                // Синхронизируем обновление с границей секунды или минуты.
+                val delayToNextTick = interval - (now % interval)
+                delay(delayToNextTick)
             }
         }
     }
@@ -180,6 +189,18 @@ class MainViewModel @Inject constructor(
                 saveSettings()
             }
 
+            ClockUiEvent.ToggleEcoMode -> {
+                val newValue = !_uiState.value.isEcoMode
+                _uiState.update { it.copy(isEcoMode = newValue) }
+                updateTime()
+                if (newValue) {
+                    stopFontChangeTimer()
+                } else if (_uiState.value.isAutoChangeFont) {
+                    startFontChangeTimer()
+                }
+                saveSettings()
+            }
+
             ClockUiEvent.ToggleMSF -> {
                 val newValue = !_uiState.value.isMaxSizeText
                 _uiState.update { it.copy(isMaxSizeText = newValue) }
@@ -227,9 +248,9 @@ class MainViewModel @Inject constructor(
     private fun startFontChangeTimerObservation() {
         viewModelScope.launch {
             _uiState.collect { state ->
-                if (state.isAutoChangeFont && fontChangeTimer == null) {
+                if (state.isAutoChangeFont && !state.isEcoMode && fontChangeTimer == null) {
                     startFontChangeTimer()
-                } else if (!state.isAutoChangeFont && fontChangeTimer != null) {
+                } else if ((!state.isAutoChangeFont || state.isEcoMode) && fontChangeTimer != null) {
                     stopFontChangeTimer()
                 }
             }
@@ -247,7 +268,7 @@ class MainViewModel @Inject constructor(
         fontChangeTimer = viewModelScope.launch {
             while (true) {
                 delay(fontChangeInterval)
-                if (_uiState.value.isAutoChangeFont) {
+                if (_uiState.value.isAutoChangeFont && !_uiState.value.isEcoMode) {
                     autoChangeFont()
                 } else {
                     break // Выходим из цикла, если автосмена отключена
@@ -277,6 +298,7 @@ class MainViewModel @Inject constructor(
             settingsRepository.updateSettings(
                 ClockSettings(
                     isSecond = _uiState.value.isSecond,
+                    isEcoMode = _uiState.value.isEcoMode,
                     isDate = _uiState.value.isDate,
                     textSize = _uiState.value.textSize,
                     textColor = _uiState.value.textColor,
