@@ -61,9 +61,9 @@ fun SettingsTypeFon(viewModel: MainViewModel,
     BoxWithConstraints(modifier = Modifier.fillMaxSize().clickable(onClick = onClose),
         contentAlignment = Alignment.BottomEnd) {
 
-        val isPortrait = maxHeight > maxWidth
+        val isLandscape = maxWidth > maxHeight
 
-        if (isPortrait) {
+        if (isLandscape) {
             Card(modifier = Modifier.fillMaxWidth(0.85f))
             {
                 Row(horizontalArrangement = Arrangement.Center)
