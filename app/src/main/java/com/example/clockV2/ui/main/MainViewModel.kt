@@ -42,6 +42,7 @@ class MainViewModel @Inject constructor(
             isDate = true,
             isSecond = true,
             isEcoMode = false,
+            ecoBrightness = 22,
             fontFamily = led2,
             availableFont = availableFonts,
             isAutoChangeFont = false,
@@ -88,6 +89,7 @@ class MainViewModel @Inject constructor(
             it.copy(
                 isSecond = settings.isSecond,
                 isEcoMode = settings.isEcoMode,
+                ecoBrightness = settings.ecoBrightness,
                 isDate = settings.isDate,
                 textSize = settings.textSize,
                 textColor = settings.textColor,
@@ -122,7 +124,7 @@ class MainViewModel @Inject constructor(
             var lastDateMinute = System.currentTimeMillis() / 60_000L
             while (isActive) {
                 updateTime()
-                val showSeconds = _uiState.value.isSecond && !_uiState.value.isEcoMode
+                val showSeconds = _uiState.value.isSecond
                 val interval = if (showSeconds) 1_000L else 60_000L
                 val now = System.currentTimeMillis()
                 val currentDateMinute = now / 60_000L
@@ -137,7 +139,7 @@ class MainViewModel @Inject constructor(
         }
     }
     private fun updateTime() {
-        val timeFormat = if (_uiState.value.isSecond && !_uiState.value.isEcoMode) "HH:mm:ss" else "HH:mm"
+        val timeFormat = if (_uiState.value.isSecond) "HH:mm:ss" else "HH:mm"
         val currentTime = timeDateManager.getCurrentTime(timeFormat)
 
         _uiState.update { it.copy(textScreen = currentTime) }
@@ -187,6 +189,12 @@ class MainViewModel @Inject constructor(
                 _uiState.update { it.copy(isSecond = newValue) }
                 updateTime()
                 startTimeUpdates()
+                saveSettings()
+            }
+
+            is ClockUiEvent.EcoBrightnessChange -> {
+                val brightness = event.brightness.coerceIn(5, 50)
+                _uiState.update { it.copy(ecoBrightness = brightness) }
                 saveSettings()
             }
 
@@ -301,6 +309,7 @@ class MainViewModel @Inject constructor(
                 ClockSettings(
                     isSecond = _uiState.value.isSecond,
                     isEcoMode = _uiState.value.isEcoMode,
+                    ecoBrightness = _uiState.value.ecoBrightness,
                     isDate = _uiState.value.isDate,
                     textSize = _uiState.value.textSize,
                     textColor = _uiState.value.textColor,
