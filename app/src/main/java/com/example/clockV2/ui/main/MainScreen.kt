@@ -67,12 +67,12 @@ fun MainScreen(viewModel: MainViewModel) {
     val context = LocalContext.current
     val activity = remember(context) { context.findActivity() }
 
-    DisposableEffect(activity, uiState.isEcoMode) {
+    DisposableEffect(activity, uiState.isEcoMode, uiState.ecoBrightness) {
         val window = activity?.window
         val originalBrightness = window?.attributes?.screenBrightness
         if (window != null && uiState.isEcoMode) {
             window.attributes = window.attributes.apply {
-                screenBrightness = 0.22f
+                screenBrightness = uiState.ecoBrightness / 100f
             }
         }
         onDispose {
