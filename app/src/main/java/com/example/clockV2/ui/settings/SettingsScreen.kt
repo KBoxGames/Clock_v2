@@ -144,7 +144,7 @@ fun SettingsScreen(
                         modifier = Modifier.fillMaxWidth(),
                         contentAlignment = Alignment.CenterEnd
                     ) {
-                        Text("Режим ЭКО (яркость ниже, без секунд)", fontSize = 18.sp)
+                        Text("Режим ЭКО (сниженная яркость)", fontSize = 18.sp)
                     }
                 }
             }
