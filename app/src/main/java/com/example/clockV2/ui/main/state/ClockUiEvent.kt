@@ -11,6 +11,7 @@ sealed interface ClockUiEvent {
     data object ToggleSecond : ClockUiEvent
     data object ToggleData : ClockUiEvent
     data object ToggleEcoMode : ClockUiEvent
+    data class EcoBrightnessChange(val brightness: Int) : ClockUiEvent
     data object ToggleACF : ClockUiEvent
     data object ToggleMSF : ClockUiEvent
     data class FontSizeChange(val newTextSize: TextUnit) : ClockUiEvent
