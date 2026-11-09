@@ -32,6 +32,7 @@ class SettingsRepository @Inject constructor(@ApplicationContext private val con
     companion object {
         val IS_SECOND = booleanPreferencesKey("is_second")
         val IS_ECO_MODE = booleanPreferencesKey("is_eco_mode")
+        val ECO_BRIGHTNESS = intPreferencesKey("eco_brightness")
         val IS_DATE = booleanPreferencesKey("is_date")
         val TEXT_SIZE = floatPreferencesKey("text_size")
         val TEXT_COLOR_ALPHA = floatPreferencesKey("text_color_alpha")
@@ -51,6 +52,7 @@ class SettingsRepository @Inject constructor(@ApplicationContext private val con
             ClockSettings(
                 isSecond = preferences[IS_SECOND] ?: true,
                 isEcoMode = preferences[IS_ECO_MODE] ?: false,
+                ecoBrightness = (preferences[ECO_BRIGHTNESS] ?: 22).coerceIn(5, 50),
                 isDate = preferences[IS_DATE] ?: true,
                 textSize = preferences[TEXT_SIZE]?.sp ?: 200.sp,
                 textColor = getColorFromPreferences(preferences),fontFamily = preferences[FONT_FAMILY]?.let { getFontFamilyByName(it) } ?: FontFamily.SansSerif,
@@ -70,6 +72,7 @@ class SettingsRepository @Inject constructor(@ApplicationContext private val con
         context.dataStore.edit { preferences ->
             preferences[IS_SECOND] = settings.isSecond
             preferences[IS_ECO_MODE] = settings.isEcoMode
+            preferences[ECO_BRIGHTNESS] = settings.ecoBrightness.coerceIn(5, 50)
             preferences[IS_DATE] = settings.isDate
             preferences[TEXT_SIZE] = settings.textSize.value
             saveColorToPreferences(preferences, settings.textColor)
@@ -141,6 +144,7 @@ class SettingsRepository @Inject constructor(@ApplicationContext private val con
 data class ClockSettings(
     val isSecond: Boolean,
     val isEcoMode: Boolean,
+    val ecoBrightness: Int = 22,
     val isDate: Boolean,
     val textSize: TextUnit,
     val textColor: Color,
