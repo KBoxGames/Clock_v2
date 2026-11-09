@@ -19,6 +19,7 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.Text
+import androidx.compose.material3.Slider
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -31,6 +32,7 @@ import androidx.compose.ui.unit.sp
 import com.example.clockV2.ui.main.MainViewModel
 import com.example.clockV2.ui.main.state.ClockUiEvent
 import com.example.clockV2.ui.theme.BorderColor
+import kotlin.math.roundToInt
 
 
 @Composable
@@ -53,11 +55,11 @@ fun SettingsScreen(
         if (isPortrait)
         {
             fractionW = 1f
-            fractionH = 0.46f
+            fractionH = 0.60f
         } else
         {
             fractionW = 0.5f
-            fractionH = 0.8f
+            fractionH = 0.92f
         }
         Card(modifier = Modifier
             .fillMaxWidth(fractionW).fillMaxHeight(fractionH)
@@ -146,7 +148,24 @@ fun SettingsScreen(
                     }
                 }
             }
-            Spacer(Modifier.height(8.dp))
+            Spacer(Modifier.height(6.dp))
+            Text(
+                text = "Яркость ЭКО: ${uiState.ecoBrightness}%",
+                color = Color.White,
+                fontSize = 18.sp,
+                modifier = Modifier.fillMaxWidth()
+            )
+            Slider(
+                value = uiState.ecoBrightness.toFloat(),
+                onValueChange = { value ->
+                    viewModel.onEvent(ClockUiEvent.EcoBrightnessChange(value.roundToInt()))
+                },
+                valueRange = 5f..50f,
+                steps = 44,
+                enabled = uiState.isEcoMode,
+                modifier = Modifier.fillMaxWidth()
+            )
+            Spacer(Modifier.height(6.dp))
             Button(
                 modifier = Modifier
                     .weight(1f)
